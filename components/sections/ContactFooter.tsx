@@ -16,8 +16,8 @@ export function ContactFooter({ lang }: { lang: Lang }) {
         mode="binary"
         glyphs={["0", "1"]}
         seed="contact-footer"
-        rows={26}
-        cols={90}
+        rows={20}
+        cols={68}
         fontSize={20}
         fade="top"
         className="inset-x-0 bottom-0 h-[34rem]"

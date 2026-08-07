@@ -14,8 +14,8 @@ export function SoftwareSection({ lang }: { lang: Lang }) {
         mode="binary"
         glyphs={BINARY_GLYPHS}
         seed="software"
-        rows={36}
-        cols={68}
+        rows={32}
+        cols={60}
         align="right"
         shadeSpread={2}
         shadeBands={5}

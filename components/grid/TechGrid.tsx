@@ -72,8 +72,8 @@ function stable(n: number, decimals: number): number {
 // corner-biased heatmap. This produces a genuinely irregular, non-geometric
 // silhouette (like an ink stain) instead of circles/ellipses, which always
 // read as "round" no matter how many of them you union together.
-const BASE_OPACITY = 0.24;
-const OPACITY_JITTER = 0.07;
+const BASE_OPACITY = 0.34;
+const OPACITY_JITTER = 0.08;
 const BASE_WEIGHT = 420;
 const WEIGHT_JITTER = 90;
 const WARP_AMOUNT = 0.22;
@@ -214,7 +214,7 @@ function buildRows({
         const vv = fade === "top" ? v : 1 - v;
         const flameHeight = 0.22 + flameNoise(u, 0) * 0.68;
         const band = smoothstep(flameHeight - 0.12, flameHeight + 0.12, vv);
-        opacity = band * (0.09 + Math.max(0, jitter + 0.5) * 0.27);
+        opacity = band * (0.15 + Math.max(0, jitter + 0.5) * 0.32);
         weight = BASE_WEIGHT + jitter * WEIGHT_JITTER * shadeSpread;
       } else {
         // Warp the sampling point with its own noise field before reading
@@ -292,9 +292,13 @@ function buildRows({
  * the block scrolls into view.
  */
 /** Ms between glyph swaps while scrambling. */
-const SWAP_INTERVAL_MS = 90;
+const SWAP_INTERVAL_MS = 150;
 /** How long the spin runs before settling. */
-const SPIN_DURATION_MS = 900;
+const SPIN_DURATION_MS = 1500;
+/** Fraction of cells re-randomized on each tick — flipping only part of the
+ * grid per tick (instead of the whole thing at once) reads as a gentle
+ * sparkle/settle rather than a full-screen strobe. */
+const SWAP_FRACTION = 0.35;
 
 export function TechGrid({
   mode,
@@ -360,14 +364,6 @@ export function TechGrid({
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (reduced) return;
 
-    const randomize = () =>
-      setDisplay(
-        gridRows.map((row) =>
-          row.cells.map(() => scrambleGlyphs[Math.floor(Math.random() * scrambleGlyphs.length)]),
-        ),
-      );
-    const settle = () => setDisplay(gridRows.map((row) => row.cells.map((c) => c.final)));
-
     let intervalId: number | undefined;
     let timeoutId: number | undefined;
 
@@ -379,12 +375,38 @@ export function TechGrid({
         const entry = entries[0];
         if (!entry.isIntersecting || intervalId !== undefined) return;
 
-        intervalId = window.setInterval(randomize, SWAP_INTERVAL_MS);
-        timeoutId = window.setTimeout(() => {
-          if (intervalId !== undefined) window.clearInterval(intervalId);
-          intervalId = undefined;
-          settle();
-        }, SPIN_DURATION_MS);
+        // Each cell gets its own random moment (35%-100% of the spin) to
+        // lock into its final glyph, instead of every cell holding a random
+        // glyph until one shared timeout snaps the whole grid to its final
+        // state at once — that single global snap read as a jarring flick.
+        // Staggering the settle makes the grid converge gradually with no
+        // one instant where everything changes together.
+        const settleAt = gridRows.map((row) => row.cells.map(() => 0.35 + Math.random() * 0.65));
+        const startTime = performance.now();
+
+        const tick = () => {
+          const elapsed = Math.min(1, (performance.now() - startTime) / SPIN_DURATION_MS);
+          setDisplay((prev) =>
+            gridRows.map((row, ri) =>
+              row.cells.map((cell, ci) => {
+                if (elapsed >= settleAt[ri][ci]) return cell.final;
+                return Math.random() < SWAP_FRACTION
+                  ? scrambleGlyphs[Math.floor(Math.random() * scrambleGlyphs.length)]
+                  : (prev[ri]?.[ci] ?? cell.final);
+              }),
+            ),
+          );
+        };
+
+        intervalId = window.setInterval(tick, SWAP_INTERVAL_MS);
+        timeoutId = window.setTimeout(
+          () => {
+            if (intervalId !== undefined) window.clearInterval(intervalId);
+            intervalId = undefined;
+            setDisplay(gridRows.map((row) => row.cells.map((c) => c.final)));
+          },
+          SPIN_DURATION_MS + SWAP_INTERVAL_MS,
+        );
       },
       { threshold: 0.1 },
     );

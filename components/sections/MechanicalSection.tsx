@@ -14,8 +14,8 @@ export function MechanicalSection({ lang }: { lang: Lang }) {
         mode="words"
         glyphs={MECHANICAL_VOCAB}
         seed="mechanical"
-        rows={30}
-        cols={26}
+        rows={26}
+        cols={23}
         align="right"
         className="inset-0"
       />

@@ -14,8 +14,8 @@ export function ElectricalSection({ lang }: { lang: Lang }) {
         mode="words"
         glyphs={ELECTRICAL_VOCAB}
         seed="electrical"
-        rows={30}
-        cols={26}
+        rows={26}
+        cols={23}
         align="left"
         className="inset-0"
       />

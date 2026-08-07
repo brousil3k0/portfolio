@@ -29,8 +29,8 @@ export function Hero({ lang }: { lang: Lang }) {
         mode="words"
         spots={HERO_SPOTS}
         seed="hero"
-        rows={48}
-        cols={68}
+        rows={36}
+        cols={52}
         shadeSpread={2.2}
         shadeBands={5}
         className="inset-0"
