@@ -44,6 +44,7 @@ export const dictionary = {
       skills: SOFTWARE_SKILLS,
     },
     contact: {
+      ctaHeading: "Got a project in mind? Let's build it together",
       availability: "Open to mechanical, electrical, and software engineering work — reach out.",
       nameLabel: "Name",
       emailLabel: "Email",
@@ -92,7 +93,6 @@ export const dictionary = {
       ],
     },
     resume: {
-      title: "Mechanical / Electrical / Software Engineer",
       back: "Back",
       summary:
         "Engineer working across mechanical design, electronics, and firmware/software — I take products from a sketch to a working prototype without handing the problem off between disciplines.",
@@ -135,6 +135,94 @@ export const dictionary = {
         { category: "Electrical", items: ELECTRICAL_SKILLS },
         { category: "Software", items: SOFTWARE_SKILLS },
       ],
+      certifications: {
+        title: "Certifications",
+        entries: [
+          {
+            name: "Placeholder Certification",
+            issuer: "Placeholder Institute",
+            year: "2025",
+          },
+        ],
+      },
+    },
+    projects: {
+      heading: "Explore what projects I've worked on",
+      body: "A mix of the mechanical, electrical, and software work I've shipped — filter by type to narrow it down.",
+      filterAll: "All",
+      tags: {
+        website: "Website",
+        mobileApp: "Mobile App",
+        controlSystem: "Control System",
+        firmware: "Firmware",
+        hardware: "Hardware",
+      },
+      viewProject: "View project",
+      items: [
+        {
+          name: "Placeholder Robotics Dashboard",
+          year: "2025",
+          description:
+            "Web dashboard for monitoring and controlling a mobile robot platform in real time — live telemetry, manual overrides, and test-run logging.",
+          tags: ["website", "controlSystem"],
+          url: "#",
+        },
+        {
+          name: "Sensor Interconnect Firmware",
+          year: "2024",
+          description:
+            "Embedded firmware driving motor control and sensor telemetry on an ARM-based interconnect board.",
+          tags: ["firmware", "hardware"],
+          url: "#",
+        },
+        {
+          name: "Field Instrumentation Suite",
+          year: "2023",
+          description:
+            "PCB-based instrumentation project, from schematic to enclosure, with a companion mobile app for field readings.",
+          tags: ["hardware", "mobileApp"],
+          url: "#",
+        },
+        {
+          name: "Test Rig Control Panel",
+          year: "2023",
+          description:
+            "Closed-loop control system for a bench test rig, with a touch-panel UI for setting run profiles and watching live sensor plots.",
+          tags: ["controlSystem", "hardware"],
+          url: "#",
+        },
+        {
+          name: "Fleet Tracking Companion App",
+          year: "2022",
+          description:
+            "Cross-platform mobile app for tracking a small equipment fleet's location, battery state, and maintenance schedule.",
+          tags: ["mobileApp"],
+          url: "#",
+        },
+        {
+          name: "Portfolio & Case Study Site",
+          year: "2022",
+          description: "This site — a Next.js portfolio with a generative background system tying three disciplines together.",
+          tags: ["website"],
+          url: "#",
+        },
+        {
+          name: "Motor Driver Firmware",
+          year: "2021",
+          description:
+            "Low-level firmware for a brushless motor driver — current sensing, commutation, and a serial telemetry link.",
+          tags: ["firmware"],
+          url: "#",
+        },
+        {
+          name: "Greenhouse Climate Controller",
+          year: "2021",
+          description:
+            "Standalone controller regulating temperature, humidity, and irrigation for a small greenhouse, with a local dashboard.",
+          tags: ["controlSystem", "firmware"],
+          url: "#",
+        },
+      ],
     },
   },
   cs: {
@@ -174,6 +262,7 @@ export const dictionary = {
       skills: SOFTWARE_SKILLS,
     },
     contact: {
+      ctaHeading: "Máte nápad na projekt? Pojďme ho společně vytvořit",
       availability: "Otevřený spolupráci ve strojírenství, elektrotechnice i softwaru — ozvěte se.",
       nameLabel: "Jméno",
       emailLabel: "E-mail",
@@ -222,7 +311,6 @@ export const dictionary = {
       ],
     },
     resume: {
-      title: "Strojní / Elektro / Softwarový inženýr",
       back: "Zpět",
       summary:
         "Inženýr pracující napříč strojním návrhem, elektronikou a firmwarem/softwarem — dovedu produkt od skici k funkčnímu prototypu bez předávání mezi obory.",
@@ -264,6 +352,94 @@ export const dictionary = {
         { category: "Strojní", items: MECHANICAL_SKILLS },
         { category: "Elektro", items: ELECTRICAL_SKILLS },
         { category: "Software", items: SOFTWARE_SKILLS },
+      ],
+      certifications: {
+        title: "Certifikace",
+        entries: [
+          {
+            name: "Placeholder certifikace",
+            issuer: "Placeholder instituce",
+            year: "2025",
+          },
+        ],
+      },
+    },
+    projects: {
+      heading: "Podívejte se na projekty, na kterých jsem pracoval",
+      body: "Kombinace strojních, elektro a softwarových projektů, které jsem vytvořil — filtrujte podle typu.",
+      filterAll: "Vše",
+      tags: {
+        website: "Web",
+        mobileApp: "Mobilní aplikace",
+        controlSystem: "Řídicí systém",
+        firmware: "Firmware",
+        hardware: "Hardware",
+      },
+      viewProject: "Zobrazit projekt",
+      items: [
+        {
+          name: "Dashboard Placeholder Robotics",
+          year: "2025",
+          description:
+            "Webový dashboard pro sledování a ovládání mobilní robotické platformy v reálném čase — telemetrie, manuální zásahy a logování testovacích jízd.",
+          tags: ["website", "controlSystem"],
+          url: "#",
+        },
+        {
+          name: "Firmware propojovací desky senzorů",
+          year: "2024",
+          description:
+            "Vestavěný firmware pro řízení motorů a telemetrii senzorů na propojovací desce s ARM procesorem.",
+          tags: ["firmware", "hardware"],
+          url: "#",
+        },
+        {
+          name: "Sada přístrojového vybavení pro terén",
+          year: "2023",
+          description:
+            "Projekt desky plošných spojů, od schématu po kryt, s doprovodnou mobilní aplikací pro čtení dat v terénu.",
+          tags: ["hardware", "mobileApp"],
+          url: "#",
+        },
+        {
+          name: "Řídicí panel zkušebního stendu",
+          year: "2023",
+          description:
+            "Uzavřená regulační smyčka pro zkušební stend s dotykovým panelem pro nastavení profilů běhu a sledování živých grafů senzorů.",
+          tags: ["controlSystem", "hardware"],
+          url: "#",
+        },
+        {
+          name: "Aplikace pro sledování flotily",
+          year: "2022",
+          description:
+            "Multiplatformní mobilní aplikace pro sledování polohy, stavu baterie a údržby malé flotily zařízení.",
+          tags: ["mobileApp"],
+          url: "#",
+        },
+        {
+          name: "Portfolio web a případové studie",
+          year: "2022",
+          description: "Tento web — portfolio v Next.js s generativním pozadím propojujícím tři obory dohromady.",
+          tags: ["website"],
+          url: "#",
+        },
+        {
+          name: "Firmware řízení motoru",
+          year: "2021",
+          description:
+            "Nízkoúrovňový firmware pro řízení bezkartáčového motoru — snímání proudu, komutace a sériová telemetrie.",
+          tags: ["firmware"],
+          url: "#",
+        },
+        {
+          name: "Regulátor klimatu ve skleníku",
+          year: "2021",
+          description:
+            "Samostatný regulátor teploty, vlhkosti a zavlažování pro menší skleník s lokálním dashboardem.",
+          tags: ["controlSystem", "firmware"],
+          url: "#",
+        },
       ],
     },
   },

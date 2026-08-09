@@ -3,27 +3,32 @@ import { BINARY_GLYPHS } from "@/components/grid/vocab";
 import { SkillTag } from "@/components/ui/SkillTag";
 import type { Lang } from "@/content/i18n";
 import { getDictionary } from "@/content/i18n";
-import { CONTAINER } from "@/lib/layout";
+import { ABS_CONTAINER, CONTAINER } from "@/lib/layout";
 
 export function SoftwareSection({ lang }: { lang: Lang }) {
   const t = getDictionary(lang);
 
   return (
-    <section id="projects" className="relative flex min-h-[90vh] scroll-mt-16 items-center overflow-hidden bg-void">
-      <TechGrid
-        mode="binary"
-        glyphs={BINARY_GLYPHS}
-        seed="software"
-        rows={32}
-        cols={60}
-        align="right"
-        shadeSpread={2}
-        shadeBands={5}
-        className="inset-0"
-      />
+    <section className="relative overflow-hidden bg-void">
+      <div className={ABS_CONTAINER}>
+        <TechGrid
+          mode="binary"
+          glyphs={BINARY_GLYPHS}
+          seed="software"
+          rows={32}
+          cols={60}
+          align="right"
+          shadeSpread={2}
+          shadeBands={5}
+          accentColor="#00cc00"
+          swapIntervalMs={70}
+          swapFraction={0.6}
+          className="inset-0"
+        />
+      </div>
 
       <div
-        className={`${CONTAINER} relative z-10 flex flex-col items-end py-24 text-right bg-[radial-gradient(ellipse_at_75%_50%,rgba(7,7,7,0.75)_0%,rgba(7,7,7,0.45)_45%,transparent_75%)]`}
+        className={`${CONTAINER} relative z-10 flex flex-col items-end pt-[11rem] pb-[9rem] md:pt-[14rem] md:pb-[12rem] text-right bg-[radial-gradient(ellipse_at_75%_50%,rgba(7,7,7,0.75)_0%,rgba(7,7,7,0.45)_45%,transparent_75%)]`}
       >
         <h2 className="max-w-2xl font-display text-3xl font-bold tracking-tight text-bone sm:text-4xl lg:text-5xl">
           {t.software.heading}

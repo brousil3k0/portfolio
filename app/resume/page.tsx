@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { LangSwitch } from "@/components/ui/LangSwitch";
+import { SkillTag } from "@/components/ui/SkillTag";
 import { getDictionary, resolveLang } from "@/content/i18n";
 import { siteConfig } from "@/content/site";
 import { CONTAINER } from "@/lib/layout";
@@ -81,9 +82,6 @@ export default async function ResumePage({
           <h1 className="font-display text-6xl font-extrabold tracking-tight sm:text-7xl">
             {siteConfig.name}
           </h1>
-          <p className="mt-3 font-mono text-base uppercase tracking-wide text-bone-dim print:text-black/70">
-            {r.title}
-          </p>
           <p className="mt-6 max-w-2xl text-lg leading-relaxed text-bone-dim print:text-black/80">
             {r.summary}
           </p>
@@ -133,6 +131,20 @@ export default async function ResumePage({
           </div>
         </Chapter>
 
+        <Chapter title={r.certifications.title}>
+          <div className="space-y-6">
+            {r.certifications.entries.map((entry) => (
+              <div key={entry.name} className="flex flex-wrap items-baseline justify-between gap-x-4">
+                <div>
+                  <h3 className="font-display text-xl font-bold">{entry.name}</h3>
+                  <p className="mt-1 text-base text-bone-dim print:text-black/80">{entry.issuer}</p>
+                </div>
+                <span className="font-mono text-sm text-bone-dim print:text-black/60">{entry.year}</span>
+              </div>
+            ))}
+          </div>
+        </Chapter>
+
         <Chapter title={r.skills}>
           <div className="space-y-10">
             {r.skillGroups.map((group) => (
@@ -143,9 +155,13 @@ export default async function ResumePage({
                     {group.category}
                   </h3>
                 </div>
-                <ul className="mt-3 space-y-1.5 pl-14 text-lg">
+                <ul className="mt-3 flex flex-wrap gap-2 pl-14">
                   {group.items.map((item) => (
-                    <li key={item}>{item}</li>
+                    <li key={item}>
+                      <SkillTag className="print:border print:border-black/30 print:bg-transparent print:text-black">
+                        {item}
+                      </SkillTag>
+                    </li>
                   ))}
                 </ul>
               </div>

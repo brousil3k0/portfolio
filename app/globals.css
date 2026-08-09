@@ -16,3 +16,21 @@
   color: var(--color-void);
 }
 
+/* Slim, low-contrast horizontal scrollbar for the projects carousel — kept
+   visible (not hidden) so scrollability stays discoverable, just quieter
+   than the default OS scrollbar. */
+.thin-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-line) transparent;
+}
+.thin-scrollbar::-webkit-scrollbar {
+  height: 6px;
+}
+.thin-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.thin-scrollbar::-webkit-scrollbar-thumb {
+  background-color: var(--color-line);
+  border-radius: 9999px;
+}
+

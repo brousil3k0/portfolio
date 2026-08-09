@@ -11,11 +11,21 @@ interface Cell {
   final: string;
   weight: number;
   opacity: number;
+  /** Accent hex for this cell, or undefined to keep the default gray/bone
+   * text color. Assigned per-cell so accent and gray glyphs scatter
+   * randomly through the shape (edges and interior alike) rather than the
+   * whole block turning a single flat color. */
+  color?: string;
 }
 
 interface Row {
   key: string;
   cells: Cell[];
+}
+
+interface DisplayCell {
+  glyph: string;
+  color?: string;
 }
 
 /** Smooth low-frequency 2D value noise from a small grid of random anchors. */
@@ -74,11 +84,30 @@ function stable(n: number, decimals: number): number {
 // read as "round" no matter how many of them you union together.
 const BASE_OPACITY = 0.34;
 const OPACITY_JITTER = 0.08;
+/** Fraction of visible cells tinted with a section's accentColor when one is
+ * given; the remainder stay gray/bone so the shading isn't a flat color. */
+const ACCENT_PROBABILITY = 0.55;
+/** Opacity multiplier applied to accent-tinted cells on top of their normal
+ * shading value, so the color reads clearly instead of blending into the
+ * gray background at the same faint opacity. */
+const ACCENT_OPACITY_BOOST = 3.2;
+/** Floor opacity for accent-tinted cells that ARE inside the halo (never
+ * applied to cells outside it, which stay at exactly 0) — without this, the
+ * darkest jittered cells of an already-dark accent hue (e.g. the navy
+ * blueprint) can round-trip back down near-invisible even after the boost
+ * multiplier above. */
+const ACCENT_MIN_OPACITY = 0.6;
 const BASE_WEIGHT = 420;
 const WEIGHT_JITTER = 90;
 const WARP_AMOUNT = 0.22;
 const SHAPE_THRESHOLD = 0.42;
 const SHAPE_EDGE = 0.05;
+/** Radial vignette (in the 0..1 unit square, distance 0 = dead center):
+ * shape mask cells beyond BOUND_INNER start fading, fully gone by
+ * BOUND_OUTER. Widening this lets the halo reach further into the corners
+ * instead of concentrating as one central blob. */
+const BOUND_INNER = 0.62;
+const BOUND_OUTER = 1.0;
 
 // Shape/warp noise resolution (the macro silhouette contour) is calibrated
 // against the 26x24 mechanical/electrical reference grid, then grown with a
@@ -103,12 +132,16 @@ function powerRes(value: number, refValue: number, refResult: number) {
   return k * value ** RES_EXPONENT;
 }
 
-function noiseRes(cols: number, rows: number) {
+/** `shapeScale` coarsens the shape/warp noise fields independently of the
+ * glyph grid's own density — below 1, fewer distinct noise cells span the
+ * same silhouette, so the mask reads as blockier/more irregular instead of
+ * resampling the same contour at a finer, smoother-looking grain. */
+function noiseRes(cols: number, rows: number, shapeScale = 1) {
   return {
-    shapeW: Math.max(4, Math.round(powerRes(cols, REF_COLS, REF_COLS / 3.7))),
-    shapeH: Math.max(4, Math.round(powerRes(rows, REF_ROWS, REF_ROWS / 4))),
-    warpW: Math.max(3, Math.round(powerRes(cols, REF_COLS, REF_COLS / 5.2))),
-    warpH: Math.max(3, Math.round(powerRes(rows, REF_ROWS, REF_ROWS / 6))),
+    shapeW: Math.max(4, Math.round(powerRes(cols, REF_COLS, REF_COLS / 3.7) * shapeScale)),
+    shapeH: Math.max(4, Math.round(powerRes(rows, REF_ROWS, REF_ROWS / 4) * shapeScale)),
+    warpW: Math.max(3, Math.round(powerRes(cols, REF_COLS, REF_COLS / 5.2) * shapeScale)),
+    warpH: Math.max(3, Math.round(powerRes(rows, REF_ROWS, REF_ROWS / 6) * shapeScale)),
     jitterW: Math.max(6, Math.round(cols / 2.4)),
     jitterH: Math.max(6, Math.round(rows / 2.7)),
   };
@@ -173,6 +206,12 @@ function buildRows({
   fade,
   shadeSpread,
   shadeBands,
+  accentColor,
+  shapeScale = 1,
+  warpAmount = WARP_AMOUNT,
+  boundInner = BOUND_INNER,
+  boundOuter = BOUND_OUTER,
+  shapeThreshold = SHAPE_THRESHOLD,
 }: {
   mode: "binary" | "words";
   glyphs: string[];
@@ -183,9 +222,15 @@ function buildRows({
   fade: FadeEdge;
   shadeSpread: number;
   shadeBands?: number;
+  accentColor?: string;
+  shapeScale?: number;
+  warpAmount?: number;
+  boundInner?: number;
+  boundOuter?: number;
+  shapeThreshold?: number;
 }): Row[] {
   const rng = createSeededRng(seed);
-  const res = noiseRes(cols, rows);
+  const res = noiseRes(cols, rows, shapeScale);
   const shapeNoise = makeBlockyNoise(rng, res.shapeW, res.shapeH);
   const warpNoiseX = makeNoise(rng, res.warpW, res.warpH);
   const warpNoiseY = makeNoise(rng, res.warpW, res.warpH);
@@ -220,10 +265,10 @@ function buildRows({
         // Warp the sampling point with its own noise field before reading
         // the shape field — this is what keeps the contour from tracing a
         // smooth geometric curve.
-        const wu = Math.min(1, Math.max(0, u + (warpNoiseX(u, v) - 0.5) * WARP_AMOUNT));
-        const wv = Math.min(1, Math.max(0, v + (warpNoiseY(u, v) - 0.5) * WARP_AMOUNT));
+        const wu = Math.min(1, Math.max(0, u + (warpNoiseX(u, v) - 0.5) * warpAmount));
+        const wv = Math.min(1, Math.max(0, v + (warpNoiseY(u, v) - 0.5) * warpAmount));
         const shape = shapeNoise(wu, wv);
-        const shapeInside = smoothstep(SHAPE_THRESHOLD, SHAPE_THRESHOLD + SHAPE_EDGE, shape);
+        const shapeInside = smoothstep(shapeThreshold, shapeThreshold + SHAPE_EDGE, shape);
 
         // Hard multiplicative mask (not just a minor bias) so cells right at
         // the literal edge of the box are always fully suppressed — without
@@ -232,7 +277,7 @@ function buildRows({
         const dx = (u - 0.5) / 0.5;
         const dy = (v - 0.5) / 0.5;
         const rDist = Math.sqrt(dx * dx + dy * dy);
-        const bound = 1 - smoothstep(0.62, 1.0, rDist);
+        const bound = 1 - smoothstep(boundInner, boundOuter, rDist);
 
         const inside = shapeInside * bound;
 
@@ -271,11 +316,21 @@ function buildRows({
       }
       prevGlyph = glyph;
 
+      // Randomly tint a portion of the visible cells with the section's
+      // accent color, leaving the rest on the default gray/bone — keeps the
+      // grayscale shading present (edges and interior alike) instead of the
+      // whole shape turning one flat color. Colored cells also get an
+      // opacity boost — accent hues read much dimmer than bone at the same
+      // opacity value, so without this the color was barely visible.
+      const color = accentColor && rng() < ACCENT_PROBABILITY ? accentColor : undefined;
+      if (color && opacity > 0) opacity = Math.min(1, Math.max(opacity * ACCENT_OPACITY_BOOST, ACCENT_MIN_OPACITY));
+
       cells.push({
         key: `${r}-${c}`,
         final: glyph,
         weight: Math.round(weight),
         opacity: stable(opacity, 3),
+        color,
       });
     }
     out.push({ key: `r${r}`, cells });
@@ -300,6 +355,15 @@ const SPIN_DURATION_MS = 1500;
  * sparkle/settle rather than a full-screen strobe. */
 const SWAP_FRACTION = 0.35;
 
+/** Below this viewport width, the grid renders at roughly a quarter of its
+ * cell count (half the rows, half the cols) — full density is both visually
+ * cluttered and, at rows*cols in the thousands, a real amount of extra DOM
+ * on phone-class hardware. */
+const MOBILE_BREAKPOINT_PX = 640;
+const MOBILE_DENSITY_SCALE = 0.5;
+const MOBILE_MIN_ROWS = 8;
+const MOBILE_MIN_COLS = 10;
+
 export function TechGrid({
   mode,
   glyphs,
@@ -312,6 +376,15 @@ export function TechGrid({
   fade = "none",
   shadeSpread = 1,
   shadeBands,
+  accentColor,
+  shapeScale = 1,
+  warpAmount,
+  boundInner,
+  boundOuter,
+  shapeThreshold,
+  swapIntervalMs = SWAP_INTERVAL_MS,
+  spinDurationMs = SPIN_DURATION_MS,
+  swapFraction = SWAP_FRACTION,
   className,
 }: {
   mode: "binary" | "words";
@@ -335,6 +408,38 @@ export function TechGrid({
    * continuous jitter, for an unmistakably "stepped" set of shades. Omit
    * for the default continuous look. */
   shadeBands?: number;
+  /** Section accent hex (e.g. blueprint/copper/terminal-green). When given,
+   * a random portion of the visible cells are tinted with it while the rest
+   * stay gray/bone, so the shape reads as accent-colored overall but keeps
+   * grayscale shading scattered through edges and interior alike. Omit to
+   * keep the plain gray/bone look (Hero, contact/footer). */
+  accentColor?: string;
+  /** Coarsens the halo's shape/warp noise below 1 — makes the silhouette
+   * read as blockier and more irregular instead of a smooth, rounded blob.
+   * Useful for dense grids (e.g. Hero) whose fine glyph resolution otherwise
+   * resamples the same contour at a smoother-looking grain. Defaults to 1. */
+  shapeScale?: number;
+  /** Overrides how much the shape mask is domain-warped before sampling —
+   * higher reads as a more distorted, less regular contour. Defaults to the
+   * component's standard warp amount. */
+  warpAmount?: number;
+  /** Overrides how far the halo's radial vignette reaches from center before
+   * fading out (0..1+ in unit-square distance) — widening lets it spread
+   * further toward the corners instead of concentrating as one central
+   * blob. Defaults to the component's standard inner/outer radius. */
+  boundInner?: number;
+  boundOuter?: number;
+  /** Overrides the noise threshold that decides whether a cell is "inside"
+   * the halo at all — higher means fewer, more scattered islands of visible
+   * glyphs with more open space between them; lower means one denser,
+   * more contiguous mass. Defaults to the component's standard threshold. */
+  shapeThreshold?: number;
+  /** Override the default scramble pace — lower is faster/more frantic.
+   * Binary sections use this to read as a clearly "live" flicker instead of
+   * a barely-perceptible change (a 0/1 swap has only two possible values). */
+  swapIntervalMs?: number;
+  spinDurationMs?: number;
+  swapFraction?: number;
   className?: string;
 }) {
   const scrambleGlyphs = useMemo(
@@ -342,19 +447,68 @@ export function TechGrid({
     [spots, glyphs],
   );
 
+  // Server always renders at full density (viewport width is unknown during
+  // SSR); once mounted, narrow viewports drop to a coarser grid. This is a
+  // one-time client-side downsize, not a continuous resize-tracking layout —
+  // acceptable for a decorative background.
+  const [narrow, setNarrow] = useState(false);
+  useEffect(() => {
+    const mq = window.matchMedia(`(max-width: ${MOBILE_BREAKPOINT_PX - 1}px)`);
+    const update = () => setNarrow(mq.matches);
+    update();
+    mq.addEventListener("change", update);
+    return () => mq.removeEventListener("change", update);
+  }, []);
+
+  const effectiveRows = narrow ? Math.max(MOBILE_MIN_ROWS, Math.round(rows * MOBILE_DENSITY_SCALE)) : rows;
+  const effectiveCols = narrow ? Math.max(MOBILE_MIN_COLS, Math.round(cols * MOBILE_DENSITY_SCALE)) : cols;
+
   const gridRows = useMemo(
-    () => buildRows({ mode, glyphs: glyphs ?? [], spots, seed, rows, cols, fade, shadeSpread, shadeBands }),
+    () =>
+      buildRows({
+        mode,
+        glyphs: glyphs ?? [],
+        spots,
+        seed,
+        rows: effectiveRows,
+        cols: effectiveCols,
+        fade,
+        shadeSpread,
+        shadeBands,
+        accentColor,
+        shapeScale,
+        warpAmount,
+        boundInner,
+        boundOuter,
+        shapeThreshold,
+      }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [mode, seed, rows, cols, fade, shadeSpread, shadeBands, spots, glyphs],
+    [
+      mode,
+      seed,
+      effectiveRows,
+      effectiveCols,
+      fade,
+      shadeSpread,
+      shadeBands,
+      accentColor,
+      shapeScale,
+      warpAmount,
+      boundInner,
+      boundOuter,
+      shapeThreshold,
+      spots,
+      glyphs,
+    ],
   );
 
-  const [display, setDisplay] = useState<string[][]>(() =>
-    gridRows.map((row) => row.cells.map((c) => c.final)),
+  const [display, setDisplay] = useState<DisplayCell[][]>(() =>
+    gridRows.map((row) => row.cells.map((c) => ({ glyph: c.final, color: c.color }))),
   );
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    setDisplay(gridRows.map((row) => row.cells.map((c) => c.final)));
+    setDisplay(gridRows.map((row) => row.cells.map((c) => ({ glyph: c.final, color: c.color }))));
   }, [gridRows]);
 
   useEffect(() => {
@@ -364,8 +518,8 @@ export function TechGrid({
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (reduced) return;
 
-    let intervalId: number | undefined;
-    let timeoutId: number | undefined;
+    let rafId: number | undefined;
+    let running = false;
 
     // Spins every time the section is scrolled into view (not just once
     // ever) — leaving and coming back re-triggers it. Guarded only against
@@ -373,7 +527,8 @@ export function TechGrid({
     const observer = new IntersectionObserver(
       (entries) => {
         const entry = entries[0];
-        if (!entry.isIntersecting || intervalId !== undefined) return;
+        if (!entry.isIntersecting || running) return;
+        running = true;
 
         // Each cell gets its own random moment (35%-100% of the spin) to
         // lock into its final glyph, instead of every cell holding a random
@@ -383,30 +538,52 @@ export function TechGrid({
         // one instant where everything changes together.
         const settleAt = gridRows.map((row) => row.cells.map(() => 0.35 + Math.random() * 0.65));
         const startTime = performance.now();
+        let lastTick = startTime;
 
-        const tick = () => {
-          const elapsed = Math.min(1, (performance.now() - startTime) / SPIN_DURATION_MS);
-          setDisplay((prev) =>
-            gridRows.map((row, ri) =>
-              row.cells.map((cell, ci) => {
-                if (elapsed >= settleAt[ri][ci]) return cell.final;
-                return Math.random() < SWAP_FRACTION
-                  ? scrambleGlyphs[Math.floor(Math.random() * scrambleGlyphs.length)]
-                  : (prev[ri]?.[ci] ?? cell.final);
-              }),
-            ),
-          );
+        // Driven by requestAnimationFrame (throttled to swapIntervalMs)
+        // rather than setInterval — an independent JS timer writing to
+        // state on its own schedule can land mid-paint and race the
+        // browser's compositor, which is a common source of tearing when
+        // several grids animate at once (e.g. scrolling fast enough that
+        // multiple sections cross the intersection threshold together).
+        // rAF keeps every write aligned to the browser's own paint cycle.
+        const frame = (now: number) => {
+          const elapsed = Math.min(1, (now - startTime) / spinDurationMs);
+
+          if (now - lastTick >= swapIntervalMs || elapsed >= 1) {
+            lastTick = now;
+            setDisplay((prev) =>
+              gridRows.map((row, ri) =>
+                row.cells.map((cell, ci) => {
+                  if (elapsed >= settleAt[ri][ci]) return { glyph: cell.final, color: cell.color };
+                  const current = prev[ri]?.[ci] ?? { glyph: cell.final, color: cell.color };
+                  if (Math.random() >= swapFraction) return current;
+                  // Always pick a glyph different from what's currently shown —
+                  // binary mode only has two possible values, so an unfiltered
+                  // random pick has a 50% chance of "swapping" to the same
+                  // digit, which reads as the grid barely moving at all.
+                  const candidates =
+                    scrambleGlyphs.length > 1 ? scrambleGlyphs.filter((g) => g !== current.glyph) : scrambleGlyphs;
+                  const glyph = candidates[Math.floor(Math.random() * candidates.length)];
+                  // Re-roll the tint too while scrambling — a cell whose
+                  // glyph flips several times but whose color never budges
+                  // reads as "only the digits are alive", not the whole cell.
+                  const color = accentColor && Math.random() < ACCENT_PROBABILITY ? accentColor : undefined;
+                  return { glyph, color };
+                }),
+              ),
+            );
+          }
+
+          if (elapsed < 1) {
+            rafId = requestAnimationFrame(frame);
+          } else {
+            running = false;
+            rafId = undefined;
+          }
         };
 
-        intervalId = window.setInterval(tick, SWAP_INTERVAL_MS);
-        timeoutId = window.setTimeout(
-          () => {
-            if (intervalId !== undefined) window.clearInterval(intervalId);
-            intervalId = undefined;
-            setDisplay(gridRows.map((row) => row.cells.map((c) => c.final)));
-          },
-          SPIN_DURATION_MS + SWAP_INTERVAL_MS,
-        );
+        rafId = requestAnimationFrame(frame);
       },
       { threshold: 0.1 },
     );
@@ -414,10 +591,9 @@ export function TechGrid({
     observer.observe(el);
     return () => {
       observer.disconnect();
-      if (intervalId !== undefined) window.clearInterval(intervalId);
-      if (timeoutId !== undefined) window.clearTimeout(timeoutId);
+      if (rafId !== undefined) window.cancelAnimationFrame(rafId);
     };
-  }, [gridRows, scrambleGlyphs]);
+  }, [gridRows, scrambleGlyphs, swapIntervalMs, spinDurationMs, swapFraction, accentColor]);
 
   return (
     <div
@@ -431,7 +607,10 @@ export function TechGrid({
       <div
         className="flex h-full w-full flex-col"
         style={{
-          alignItems: align === "right" ? "flex-end" : "flex-start",
+          // A fade band (the footer's flame texture) must stretch full-width
+          // edge to edge, not hug one side and shrink to its content width
+          // like the halo grids do.
+          alignItems: fade !== "none" ? "stretch" : align === "right" ? "flex-end" : "flex-start",
           // Halo (fade="none") stays centered in its box. The footer's
           // bottom-anchored band must hug the true bottom edge — centering
           // it here was leaving a gap between the glyphs and the page's
@@ -443,8 +622,12 @@ export function TechGrid({
         {gridRows.map((row, ri) => (
           <div
             key={row.key}
-            className="flex justify-center"
-            style={{ lineHeight: 1, gap: mode === "binary" ? "0.6em" : "0.7em" }}
+            className="flex"
+            style={{
+              lineHeight: 1,
+              gap: mode === "binary" ? "0.6em" : "0.7em",
+              justifyContent: fade !== "none" ? "space-between" : "center",
+            }}
           >
             {row.cells.map((cell, ci) => (
               <span
@@ -454,12 +637,13 @@ export function TechGrid({
                   fontSize,
                   fontWeight: cell.weight,
                   opacity: cell.opacity,
+                  color: display[ri]?.[ci]?.color ?? cell.color,
                   width: mode === "binary" ? `${Math.round(fontSize * 0.62)}px` : undefined,
                   textAlign: mode === "binary" ? "center" : undefined,
                   display: "inline-block",
                 }}
               >
-                {display[ri]?.[ci] ?? cell.final}
+                {display[ri]?.[ci]?.glyph ?? cell.final}
               </span>
             ))}
           </div>

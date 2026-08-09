@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { MobileMenu } from "@/components/MobileMenu";
 import { LangSwitch } from "@/components/ui/LangSwitch";
 import type { Lang } from "@/content/i18n";
 import { getDictionary } from "@/content/i18n";
@@ -16,7 +17,7 @@ export function Nav({ lang }: { lang: Lang }) {
           {siteConfig.handle}
         </a>
 
-        <div className="flex items-center gap-6 tracking-wide text-bone-dim">
+        <div className="hidden items-center gap-6 tracking-wide text-bone-dim md:flex">
           <a href="#skills" className="transition-colors hover:text-bone">
             ${t.nav.skills}$
           </a>
@@ -32,13 +33,15 @@ export function Nav({ lang }: { lang: Lang }) {
             §{t.nav.resume}§
           </Link>
           <a
-            href="#contact"
+            href="#site-footer"
             className="ml-6 bg-bone px-4 py-2 text-void transition-colors hover:bg-bone-dim"
           >
             !{t.nav.contactMe}!
           </a>
           <LangSwitch lang={lang} path="/" className="ml-6" />
         </div>
+
+        <MobileMenu lang={lang} />
       </div>
     </header>
   );

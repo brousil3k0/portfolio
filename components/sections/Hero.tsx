@@ -5,7 +5,7 @@ import { ScrollCue } from "@/components/ui/ScrollCue";
 import type { Lang } from "@/content/i18n";
 import { getDictionary } from "@/content/i18n";
 import { siteConfig } from "@/content/site";
-import { CONTAINER } from "@/lib/layout";
+import { ABS_CONTAINER, CONTAINER } from "@/lib/layout";
 
 // Three vocabularies (binary / mechanical / electrical), each anchored to
 // its own spot so they cluster into distinct regions that blend into each
@@ -15,9 +15,9 @@ import { CONTAINER } from "@/lib/layout";
 // reach is what keeps the three regions interfering with each other at
 // their edges rather than reading as three fully isolated zones.
 const HERO_SPOTS: GlyphSpot[] = [
-  { glyphs: BINARY_GLYPHS, center: [0.22, 0.3], sigma: 0.44 },
-  { glyphs: MECHANICAL_VOCAB, center: [0.82, 0.2], sigma: 0.22 },
-  { glyphs: ELECTRICAL_VOCAB, center: [0.5, 0.87], sigma: 0.22 },
+  { glyphs: BINARY_GLYPHS, center: [0.22, 0.3], sigma: 0.52 },
+  { glyphs: MECHANICAL_VOCAB, center: [0.82, 0.2], sigma: 0.32 },
+  { glyphs: ELECTRICAL_VOCAB, center: [0.5, 0.87], sigma: 0.32 },
 ];
 
 export function Hero({ lang }: { lang: Lang }) {
@@ -25,16 +25,23 @@ export function Hero({ lang }: { lang: Lang }) {
 
   return (
     <section className="relative flex min-h-[100svh] flex-col overflow-hidden bg-void">
-      <TechGrid
-        mode="words"
-        spots={HERO_SPOTS}
-        seed="hero"
-        rows={36}
-        cols={52}
-        shadeSpread={2.2}
-        shadeBands={5}
-        className="inset-0"
-      />
+      <div className={ABS_CONTAINER}>
+        <TechGrid
+          mode="words"
+          spots={HERO_SPOTS}
+          seed="hero"
+          rows={24}
+          cols={36}
+          shadeSpread={2.2}
+          shadeBands={5}
+          shapeScale={0.9}
+          warpAmount={0.3}
+          boundInner={0.68}
+          boundOuter={1.05}
+          shapeThreshold={0.58}
+          className="inset-0"
+        />
+      </div>
 
       <div className={`${CONTAINER} relative z-10 flex flex-1 flex-col pt-28 pb-8`}>
         <div className="flex max-w-2xl flex-1 flex-col justify-center bg-[radial-gradient(ellipse_at_30%_50%,rgba(7,7,7,0.75)_0%,rgba(7,7,7,0.45)_45%,transparent_75%)]">

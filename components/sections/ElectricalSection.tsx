@@ -3,25 +3,28 @@ import { ELECTRICAL_VOCAB } from "@/components/grid/vocab";
 import { SkillTag } from "@/components/ui/SkillTag";
 import type { Lang } from "@/content/i18n";
 import { getDictionary } from "@/content/i18n";
-import { CONTAINER } from "@/lib/layout";
+import { ABS_CONTAINER, CONTAINER } from "@/lib/layout";
 
 export function ElectricalSection({ lang }: { lang: Lang }) {
   const t = getDictionary(lang);
 
   return (
-    <section className="relative flex min-h-[90vh] items-center overflow-hidden bg-void">
-      <TechGrid
-        mode="words"
-        glyphs={ELECTRICAL_VOCAB}
-        seed="electrical"
-        rows={26}
-        cols={23}
-        align="left"
-        className="inset-0"
-      />
+    <section className="relative overflow-hidden bg-void">
+      <div className={ABS_CONTAINER}>
+        <TechGrid
+          mode="words"
+          glyphs={ELECTRICAL_VOCAB}
+          seed="electrical"
+          rows={26}
+          cols={23}
+          align="left"
+          accentColor="#97564a"
+          className="inset-0"
+        />
+      </div>
 
       <div
-        className={`${CONTAINER} relative z-10 flex flex-col items-start py-24 text-left bg-[radial-gradient(ellipse_at_25%_50%,rgba(7,7,7,0.75)_0%,rgba(7,7,7,0.45)_45%,transparent_75%)]`}
+        className={`${CONTAINER} relative z-10 flex flex-col items-start py-44 md:py-56 text-left bg-[radial-gradient(ellipse_at_25%_50%,rgba(7,7,7,0.75)_0%,rgba(7,7,7,0.45)_45%,transparent_75%)]`}
       >
         <h2 className="max-w-2xl font-display text-3xl font-bold tracking-tight text-bone sm:text-4xl lg:text-5xl">
           {t.electrical.heading}

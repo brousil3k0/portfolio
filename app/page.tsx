@@ -3,6 +3,7 @@ import { ContactFooter } from "@/components/sections/ContactFooter";
 import { ElectricalSection } from "@/components/sections/ElectricalSection";
 import { Hero } from "@/components/sections/Hero";
 import { MechanicalSection } from "@/components/sections/MechanicalSection";
+import { ProjectsSection } from "@/components/sections/ProjectsSection";
 import { SoftwareSection } from "@/components/sections/SoftwareSection";
 import { resolveLang } from "@/content/i18n";
 
@@ -21,6 +22,7 @@ export default async function Home({
       <MechanicalSection lang={lang} />
       <ElectricalSection lang={lang} />
       <SoftwareSection lang={lang} />
+      <ProjectsSection lang={lang} />
       <ContactFooter lang={lang} />
     </main>
   );
