@@ -13,9 +13,9 @@ function ArrowDownLeftIcon({ className }: { className?: string }) {
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
-      strokeWidth="3"
-      strokeLinecap="round"
-      strokeLinejoin="round"
+      strokeWidth="2"
+      strokeLinecap="square"
+      strokeLinejoin="miter"
       className={className}
     >
       <path d="M17 7L7 17" />
@@ -40,68 +40,91 @@ export function ContactFooter({ lang }: { lang: Lang }) {
         fade="top"
         swapIntervalMs={70}
         swapFraction={0.6}
-        className="inset-x-0 bottom-0 h-[34rem]"
+        className="inset-x-0 bottom-0 h-[46rem]"
       />
 
       <div className={`${CONTAINER} relative z-10 pt-[5rem] pb-[2rem] md:pt-[7rem] md:pb-[3rem]`}>
         <div className="mb-28 flex justify-end md:mb-36">
-          <a href="#contact-form" className="group inline-flex items-center gap-3 whitespace-nowrap">
-            <h2 className="font-display text-2xl font-bold tracking-tight text-bone transition-colors group-hover:text-bone-dim sm:text-3xl">
-              {t.contact.ctaHeading}
-            </h2>
-            <ArrowDownLeftIcon
-              className="h-6 w-6 shrink-0 text-bone transition-transform duration-200 group-hover:translate-x-[-2px] group-hover:translate-y-[2px] sm:h-[1.875rem] sm:w-[1.875rem]"
-            />
+          <a href="#contact-form" className="group inline-flex flex-col items-end gap-6">
+            <div className="relative w-fit max-w-full">
+              <div aria-hidden="true" className="absolute -inset-6 rounded-[2rem] bg-void/85 blur-xl" />
+              <div className="relative text-right">
+                <h2 className="font-display text-2xl font-bold tracking-tight text-bone transition-colors group-hover:text-bone-dim sm:text-4xl lg:text-5xl">
+                  <span className="block sm:whitespace-nowrap">{t.contact.ctaHeadingLine1}</span>
+                  <span className="block sm:whitespace-nowrap">{t.contact.ctaHeadingLine2}</span>
+                </h2>
+                <p className="mt-8 ml-auto max-w-xl text-lg leading-relaxed text-bone-dim">{t.contact.ctaSubtitle}</p>
+              </div>
+            </div>
+            <ArrowDownLeftIcon className="h-8 w-8 shrink-0 text-bone transition-transform duration-200 group-hover:translate-x-[-2px] group-hover:translate-y-[2px] sm:h-9 sm:w-9" />
           </a>
         </div>
 
         <div className="grid gap-16 md:grid-cols-2 md:gap-12">
           <div className="flex flex-col">
-            <h2 className="font-display text-4xl font-semibold leading-none tracking-tight text-bone sm:text-5xl">
-              {siteConfig.name}
-            </h2>
-            <p className="mt-4 max-w-sm text-bone-dim">{t.contact.availability}</p>
+            <div className="relative w-fit max-w-full">
+              <div aria-hidden="true" className="absolute -inset-6 rounded-[2rem] bg-void/85 blur-xl" />
+              <div className="relative">
+                <h2 className="font-display text-4xl font-semibold leading-none tracking-tight text-bone sm:text-5xl">
+                  {siteConfig.name}
+                </h2>
+                <p className="mt-4 max-w-sm text-bone-dim">{t.contact.availability}</p>
+              </div>
+            </div>
 
-            <ul className="mt-auto space-y-3 pt-8 font-mono text-sm">
-              <li>
-                <a
-                  href="/resume"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-bone underline decoration-line underline-offset-4 transition-colors hover:decoration-bone"
-                >
-                  {t.nav.resume} ↗
-                </a>
-              </li>
-              <li>
-                <a
-                  href={siteConfig.links.linkedin}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-bone underline decoration-line underline-offset-4 transition-colors hover:decoration-bone"
-                >
-                  {t.contact.linkedin} ↗
-                </a>
-              </li>
-              <li>
-                <a
-                  href={siteConfig.links.github}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-bone underline decoration-line underline-offset-4 transition-colors hover:decoration-bone"
-                >
-                  {t.contact.github} ↗
-                </a>
-              </li>
-              <li>
-                <a
-                  href={`mailto:${siteConfig.email}`}
-                  className="text-bone underline decoration-line underline-offset-4 transition-colors hover:decoration-bone"
-                >
-                  {siteConfig.email}
-                </a>
-              </li>
-            </ul>
+            <div className="relative mt-auto w-fit max-w-full pt-8">
+              <div aria-hidden="true" className="absolute -inset-6 rounded-[2rem] bg-void/85 blur-xl" />
+              <ul className="relative space-y-3 font-mono text-sm">
+                <li>
+                  <a
+                    href="/resume"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-bone underline decoration-line underline-offset-4 transition-colors hover:decoration-bone"
+                  >
+                    {t.nav.resume} ↗
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href={siteConfig.links.linkedin}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-bone underline decoration-line underline-offset-4 transition-colors hover:decoration-bone"
+                  >
+                    {t.contact.linkedin} ↗
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href={siteConfig.links.github}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-bone underline decoration-line underline-offset-4 transition-colors hover:decoration-bone"
+                  >
+                    {t.contact.github} ↗
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href={siteConfig.links.orcid}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-bone underline decoration-line underline-offset-4 transition-colors hover:decoration-bone"
+                  >
+                    {t.contact.orcid} ↗
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href={`mailto:${siteConfig.email}`}
+                    className="text-bone underline decoration-line underline-offset-4 transition-colors hover:decoration-bone"
+                  >
+                    {siteConfig.email}
+                  </a>
+                </li>
+              </ul>
+            </div>
           </div>
 
           <div id="contact-form" className="scroll-mt-24">
@@ -114,10 +137,18 @@ export function ContactFooter({ lang }: { lang: Lang }) {
         id="site-footer"
         className={`${CONTAINER} relative z-10 flex flex-col items-center justify-between gap-4 py-8 font-mono text-xs text-bone-dim sm:flex-row`}
       >
-        <span>
-          © {year} {siteConfig.name}
+        <span className="relative">
+          <span aria-hidden="true" className="absolute -inset-3 rounded-xl bg-void/85 blur-md" />
+          <span className="relative">
+            © {year} {siteConfig.name}
+          </span>
         </span>
-        <LangSwitch lang={lang} path="/" />
+        <div className="relative">
+          <div aria-hidden="true" className="absolute -inset-3 rounded-xl bg-void/85 blur-md" />
+          <div className="relative">
+            <LangSwitch lang={lang} path="/" />
+          </div>
+        </div>
       </div>
     </section>
   );

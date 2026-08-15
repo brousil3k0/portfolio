@@ -44,19 +44,39 @@ export function Hero({ lang }: { lang: Lang }) {
       </div>
 
       <div className={`${CONTAINER} relative z-10 flex flex-1 flex-col pt-28 pb-8`}>
-        <div className="flex max-w-2xl flex-1 flex-col justify-center bg-[radial-gradient(ellipse_at_30%_50%,rgba(7,7,7,0.75)_0%,rgba(7,7,7,0.45)_45%,transparent_75%)]">
-          <h1 className="font-display text-5xl font-bold leading-[1] tracking-tight text-bone sm:text-6xl md:text-7xl">
-            {siteConfig.name}
-          </h1>
+        <div className="flex flex-1 flex-col">
+          <div className="relative w-fit max-w-6xl pt-24 sm:pt-32 md:pt-40">
+            <div aria-hidden="true" className="absolute -inset-6 rounded-[2rem] bg-void/85 blur-xl" />
+            <h1 className="relative font-display text-base font-normal leading-[1.25] tracking-tight text-bone sm:text-[32px] md:text-[38px] lg:text-[52px] xl:text-[58px]">
+              <span className="block whitespace-nowrap">
+                {t.hero.sloganLine1.map((seg, i) => (
+                  <span key={i} className={"bold" in seg && seg.bold ? "font-bold" : undefined}>
+                    {seg.text}
+                  </span>
+                ))}
+              </span>
+              <span className="ml-16 block whitespace-nowrap sm:ml-28 md:ml-40 lg:ml-56 xl:ml-64">
+                {t.hero.sloganLine2.map((seg, i) => (
+                  <span key={i} className={"bold" in seg && seg.bold ? "font-bold" : undefined}>
+                    {seg.text}
+                  </span>
+                ))}
+              </span>
+            </h1>
+          </div>
 
-          <blockquote className="mt-8">
-            <p className="font-display text-2xl font-medium leading-snug tracking-tight text-bone-dim sm:text-3xl">
-              “{t.hero.quote}”
+          {/* mt-auto pushes this to the bottom of the flex-1 column, right
+              above the ScrollCue (absolute, bottom-10 in its own right) —
+              centered on the full page-content width (not the slogan's own,
+              narrower box) via a separate wrapper so it doesn't inherit the
+              h1's shrink-to-fit width and end up off-center relative to the
+              page. */}
+          <div className="relative mt-auto w-full max-w-6xl pb-28 sm:pb-32 md:pb-36">
+            <div aria-hidden="true" className="absolute -inset-3 rounded-xl bg-void/85 blur-md" />
+            <p className="relative text-center font-mono text-base uppercase tracking-[0.2em] text-bone-dim sm:text-lg md:text-xl">
+              {siteConfig.name}
             </p>
-            <footer className="mt-4 font-mono text-sm uppercase tracking-[0.2em] text-bone-dim sm:text-base">
-              — {siteConfig.handle}
-            </footer>
-          </blockquote>
+          </div>
         </div>
       </div>
 

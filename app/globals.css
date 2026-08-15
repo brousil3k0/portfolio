@@ -16,6 +16,7 @@
   color: var(--color-void);
 }
 
+
 /* Slim, low-contrast horizontal scrollbar for the projects carousel — kept
    visible (not hidden) so scrollability stays discoverable, just quieter
    than the default OS scrollbar. */

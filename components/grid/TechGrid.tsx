@@ -82,8 +82,8 @@ function stable(n: number, decimals: number): number {
 // corner-biased heatmap. This produces a genuinely irregular, non-geometric
 // silhouette (like an ink stain) instead of circles/ellipses, which always
 // read as "round" no matter how many of them you union together.
-const BASE_OPACITY = 0.34;
-const OPACITY_JITTER = 0.08;
+const BASE_OPACITY = 0.48;
+const OPACITY_JITTER = 0.1;
 /** Fraction of visible cells tinted with a section's accentColor when one is
  * given; the remainder stay gray/bone so the shading isn't a flat color. */
 const ACCENT_PROBABILITY = 0.55;
@@ -155,6 +155,11 @@ export interface GlyphSpot {
    * overlapping region; smaller means tighter and more separated from the
    * others. Falls back to DEFAULT_SPOT_SIGMA when omitted. */
   sigma?: number;
+  /** Accent hex for glyphs drawn from this spot specifically — lets a
+   * multi-vocabulary grid (e.g. Hero's binary/mechanical/electrical blend)
+   * tint each vocabulary with its own section color instead of one flat
+   * color for the whole grid. Omit to leave this spot's glyphs gray/bone. */
+  accentColor?: string;
 }
 
 /** Default spot radius (in unit-square units) when a spot doesn't specify
@@ -173,7 +178,7 @@ function pickSpotGlyph(
   v: number,
   spots: GlyphSpot[],
   prevGlyph: string | undefined,
-): string {
+): { glyph: string; spotColor?: string } {
   const weights = spots.map((s) => {
     const dx = u - s.center[0];
     const dy = v - s.center[1];
@@ -193,7 +198,8 @@ function pickSpotGlyph(
   }
   const pool = spots[index].glyphs;
   const candidates = pool.length > 1 ? pool.filter((g) => g !== prevGlyph) : pool;
-  return candidates[Math.floor(rng() * candidates.length)];
+  const glyph = candidates[Math.floor(rng() * candidates.length)];
+  return { glyph, spotColor: spots[index].accentColor };
 }
 
 function buildRows({
@@ -306,23 +312,30 @@ function buildRows({
       // Word vocabulary shouldn't repeat immediately next to itself (e.g.
       // "20g6 20g6") — binary digits are exempt, repetition there is normal.
       let glyph: string;
+      let cellAccent: string | undefined;
       if (spots && spots.length > 0) {
-        glyph = pickSpotGlyph(rng, u, v, spots, prevGlyph);
+        const picked = pickSpotGlyph(rng, u, v, spots, prevGlyph);
+        glyph = picked.glyph;
+        cellAccent = picked.spotColor;
       } else if (mode === "words" && glyphs.length > 1) {
         const pool = glyphs.filter((g) => g !== prevGlyph);
         glyph = pool[Math.floor(rng() * pool.length)];
+        cellAccent = accentColor;
       } else {
         glyph = glyphs[Math.floor(rng() * glyphs.length)];
+        cellAccent = accentColor;
       }
       prevGlyph = glyph;
 
-      // Randomly tint a portion of the visible cells with the section's
-      // accent color, leaving the rest on the default gray/bone — keeps the
-      // grayscale shading present (edges and interior alike) instead of the
-      // whole shape turning one flat color. Colored cells also get an
-      // opacity boost — accent hues read much dimmer than bone at the same
-      // opacity value, so without this the color was barely visible.
-      const color = accentColor && rng() < ACCENT_PROBABILITY ? accentColor : undefined;
+      // Randomly tint a portion of the visible cells with the cell's accent
+      // color (the section's own for a flat grid, or the glyph's own spot's
+      // for a multi-vocabulary blend), leaving the rest on the default
+      // gray/bone — keeps the grayscale shading present (edges and interior
+      // alike) instead of the whole shape turning one flat color. Colored
+      // cells also get an opacity boost — accent hues read much dimmer than
+      // bone at the same opacity value, so without this the color was
+      // barely visible.
+      const color = cellAccent && rng() < ACCENT_PROBABILITY ? cellAccent : undefined;
       if (color && opacity > 0) opacity = Math.min(1, Math.max(opacity * ACCENT_OPACITY_BOOST, ACCENT_MIN_OPACITY));
 
       cells.push({
@@ -447,6 +460,16 @@ export function TechGrid({
     [spots, glyphs],
   );
 
+  // Pool of accent colors a scrambling cell can flash while it's still
+  // mid-spin — every spot's own color for a multi-vocabulary blend, or just
+  // the section's single accent for a flat grid.
+  const scrambleColors = useMemo(() => {
+    if (spots && spots.length > 0) {
+      return spots.map((s) => s.accentColor).filter((c): c is string => Boolean(c));
+    }
+    return accentColor ? [accentColor] : [];
+  }, [spots, accentColor]);
+
   // Server always renders at full density (viewport width is unknown during
   // SSR); once mounted, narrow viewports drop to a coarser grid. This is a
   // one-time client-side downsize, not a continuous resize-tracking layout —
@@ -568,7 +591,10 @@ export function TechGrid({
                   // Re-roll the tint too while scrambling — a cell whose
                   // glyph flips several times but whose color never budges
                   // reads as "only the digits are alive", not the whole cell.
-                  const color = accentColor && Math.random() < ACCENT_PROBABILITY ? accentColor : undefined;
+                  const color =
+                    scrambleColors.length > 0 && Math.random() < ACCENT_PROBABILITY
+                      ? scrambleColors[Math.floor(Math.random() * scrambleColors.length)]
+                      : undefined;
                   return { glyph, color };
                 }),
               ),
@@ -593,7 +619,7 @@ export function TechGrid({
       observer.disconnect();
       if (rafId !== undefined) window.cancelAnimationFrame(rafId);
     };
-  }, [gridRows, scrambleGlyphs, swapIntervalMs, spinDurationMs, swapFraction, accentColor]);
+  }, [gridRows, scrambleGlyphs, swapIntervalMs, spinDurationMs, swapFraction, scrambleColors]);
 
   return (
     <div

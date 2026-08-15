@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { IBM_Plex_Sans, JetBrains_Mono } from "next/font/google";
+import { SmoothScrollLinks } from "@/components/SmoothScrollLinks";
 import "./globals.css";
 
 const plexSans = IBM_Plex_Sans({
@@ -26,6 +27,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="en" className={`${plexSans.variable} ${jetbrainsMono.variable} h-full`}>
       <body className="min-h-full bg-void font-body text-bone antialiased">
+        <SmoothScrollLinks />
         {children}
       </body>
     </html>
