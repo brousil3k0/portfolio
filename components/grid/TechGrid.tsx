@@ -539,7 +539,10 @@ export function TechGrid({
     if (!el) return;
 
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (reduced) return;
+    // navigator.connection is Chromium-only and always optional — absent
+    // elsewhere, this simply falls through to running the animation.
+    const saveData = (navigator as { connection?: { saveData?: boolean } }).connection?.saveData ?? false;
+    if (reduced || saveData) return;
 
     let rafId: number | undefined;
     let running = false;

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { HtmlLangSync } from "@/components/HtmlLangSync";
 import { Nav } from "@/components/Nav";
 import { TechGrid } from "@/components/grid/TechGrid";
 import { BINARY_GLYPHS } from "@/components/grid/vocab";
@@ -46,7 +47,8 @@ export default async function ProjectPage({
   const accentColor = PROJECT_STATUS_COLOR[item.status];
 
   return (
-    <main className="bg-void text-bone">
+    <main id="main-content" className="bg-void text-bone">
+      <HtmlLangSync lang={lang} />
       <Nav lang={lang} path={`/projects/${slug}`} />
 
       <section className="relative overflow-hidden bg-void">
@@ -111,7 +113,8 @@ export default async function ProjectPage({
                     rel="noopener noreferrer"
                     className="mt-3 inline-flex items-center gap-2 font-mono text-sm text-bone underline decoration-line underline-offset-4 transition-colors hover:decoration-bone"
                   >
-                    {item.url} ↗
+                    {item.url} <span aria-hidden="true">↗</span>
+                    <span className="sr-only"> (opens in a new tab)</span>
                   </a>
                 </div>
               )}
@@ -130,7 +133,8 @@ export default async function ProjectPage({
                           rel="noopener noreferrer"
                           className="inline-flex items-center gap-2 font-mono text-sm text-bone underline decoration-line underline-offset-4 transition-colors hover:decoration-bone"
                         >
-                          {file.name} ↗
+                          {file.name} <span aria-hidden="true">↗</span>
+                          <span className="sr-only"> (opens in a new tab)</span>
                         </a>
                       </li>
                     ))}
@@ -152,12 +156,14 @@ export default async function ProjectPage({
               className="mt-6 grid gap-4"
               style={{ gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))" }}
             >
-              {item.images.map((src) => (
+              {item.images.map((src, i) => (
                 // eslint-disable-next-line @next/next/no-img-element
                 <img
                   key={src}
                   src={src}
-                  alt={item.name}
+                  alt={item.images.length > 1 ? `${item.name} — image ${i + 1} of ${item.images.length}` : item.name}
+                  loading="lazy"
+                  decoding="async"
                   className="h-64 w-full rounded-xl border border-line object-cover"
                 />
               ))}

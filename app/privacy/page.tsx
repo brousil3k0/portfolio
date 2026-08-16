@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { HtmlLangSync } from "@/components/HtmlLangSync";
 import { LangSwitch } from "@/components/ui/LangSwitch";
 import { getDictionary, resolveLang } from "@/content/i18n";
 import { siteConfig } from "@/content/site";
@@ -20,7 +21,8 @@ export default async function PrivacyPage({
   const p = t.privacy;
 
   return (
-    <main className="min-h-screen bg-void py-20 text-bone">
+    <main id="main-content" className="min-h-screen bg-void py-20 text-bone">
+      <HtmlLangSync lang={lang} />
       <div className={CONTAINER}>
         <div className="mb-14 flex items-center justify-between">
           <Link

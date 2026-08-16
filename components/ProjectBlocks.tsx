@@ -34,8 +34,21 @@ export function ProjectBlocks({ blocks, name }: { blocks: readonly ProjectBlock[
             // sizes purely off the text; the absolutely-positioned image
             // then fills whatever height that turns out to be.
             <div className="relative h-full w-full overflow-hidden rounded-xl border border-line">
+              {/* Plain <img>, not next/image: content is picked at build
+                  time from a small fixed placeholder set, not user-uploaded
+                  or dynamically sized, so there's nothing for next/image's
+                  runtime resizing to do here. loading="lazy" still defers
+                  the network fetch until the block scrolls near the
+                  viewport — the actual sustainability lever for a page with
+                  several of these. */}
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={block.image} alt={name} className="absolute inset-0 h-full w-full object-cover" />
+              <img
+                src={block.image}
+                alt={name}
+                loading="lazy"
+                decoding="async"
+                className="absolute inset-0 h-full w-full object-cover"
+              />
             </div>
           );
           const text = <p className="text-justify text-xl leading-relaxed text-bone-dim">{block.text}</p>;
@@ -70,12 +83,14 @@ export function ProjectBlocks({ blocks, name }: { blocks: readonly ProjectBlock[
             className="grid gap-4"
             style={{ gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))" }}
           >
-            {block.images.map((src) => (
+            {block.images.map((src, i) => (
               // eslint-disable-next-line @next/next/no-img-element
               <img
                 key={src}
                 src={src}
-                alt={name}
+                alt={block.images.length > 1 ? `${name} — image ${i + 1} of ${block.images.length}` : name}
+                loading="lazy"
+                decoding="async"
                 className="w-full rounded-xl border border-line object-cover"
                 style={{ height: block.height }}
               />

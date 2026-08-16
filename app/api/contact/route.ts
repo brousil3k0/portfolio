@@ -8,7 +8,26 @@ import { contactFormSchema } from "@/lib/validation";
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
+// Lightweight CSRF defense: a fetch() POST carries no cookie/session for a
+// third-party site to ride on, but without this check any page on the web
+// could still silently spam this endpoint from a visitor's browser. Origin
+// (sent by all modern browsers on same-site fetches) falling back to
+// Referer covers the browsers that omit Origin on same-origin requests.
+function isSameOrigin(req: Request): boolean {
+  const origin = req.headers.get("origin") ?? req.headers.get("referer");
+  if (!origin) return false;
+  try {
+    return new URL(origin).origin === new URL(req.url).origin;
+  } catch {
+    return false;
+  }
+}
+
 export async function POST(req: Request) {
+  if (!isSameOrigin(req)) {
+    return NextResponse.json({ error: "Invalid request origin." }, { status: 403 });
+  }
+
   const ip = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "unknown";
   if (isRateLimited(ip)) {
     return NextResponse.json(
@@ -40,13 +59,18 @@ export async function POST(req: Request) {
   try {
     const env = getContactEnv();
     const transporter = getTransporter();
+    // Strip CR/LF before the name reaches an email header — nodemailer
+    // sanitizes header values itself, but a user-controlled string landing
+    // in a header is exactly the shape of a header-injection bug, so this
+    // stays defensive even against a future mail library that doesn't.
+    const safeName = parsed.data.name.replace(/[\r\n]+/g, " ");
     await transporter.sendMail({
       from: `"Portfolio Contact" <${env.user}>`,
       to: env.to,
       replyTo: parsed.data.email,
-      subject: `New message from ${parsed.data.name}`,
+      subject: `New message from ${safeName}`,
       text: parsed.data.message,
-      html: `<p><strong>${escapeHtml(parsed.data.name)}</strong> (${escapeHtml(
+      html: `<p><strong>${escapeHtml(safeName)}</strong> (${escapeHtml(
         parsed.data.email,
       )})</p><p>${escapeHtml(parsed.data.message).replace(/\n/g, "<br/>")}</p>`,
     });

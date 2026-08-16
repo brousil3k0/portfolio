@@ -1,3 +1,4 @@
+import { HtmlLangSync } from "@/components/HtmlLangSync";
 import { Nav } from "@/components/Nav";
 import { ContactFooter } from "@/components/sections/ContactFooter";
 import { ElectricalSection } from "@/components/sections/ElectricalSection";
@@ -16,7 +17,8 @@ export default async function Home({
   const lang = resolveLang(params.lang);
 
   return (
-    <main>
+    <main id="main-content">
+      <HtmlLangSync lang={lang} />
       <Nav lang={lang} />
       <Hero lang={lang} />
       <MechanicalSection lang={lang} />

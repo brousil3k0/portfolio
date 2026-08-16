@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { HtmlLangSync } from "@/components/HtmlLangSync";
 import { ContactFooter } from "@/components/sections/ContactFooter";
 import { LangSwitch } from "@/components/ui/LangSwitch";
 import { SkillTag } from "@/components/ui/SkillTag";
@@ -67,7 +68,8 @@ export default async function ResumePage({
   const r = t.resume;
 
   return (
-    <main className="min-h-screen bg-void py-20 text-bone print:bg-white print:py-8 print:text-black">
+    <main id="main-content" className="min-h-screen bg-void py-20 text-bone print:bg-white print:py-8 print:text-black">
+      <HtmlLangSync lang={lang} />
       <div className={CONTAINER}>
         <div className="mb-14 flex items-center justify-between print:hidden">
           <Link
@@ -144,7 +146,8 @@ export default async function ResumePage({
                       rel="noopener noreferrer"
                       className="text-bone underline decoration-line underline-offset-4 transition-colors hover:decoration-bone print:text-black"
                     >
-                      {entry.name} ↗
+                      {entry.name} <span aria-hidden="true">↗</span>
+                      <span className="sr-only"> (opens in a new tab)</span>
                     </a>
                   </h3>
                   <p className="mt-1 text-base text-bone-dim print:text-black/80">{entry.issuer}</p>

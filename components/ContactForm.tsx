@@ -9,7 +9,7 @@ import type { Lang } from "@/content/i18n";
 type Status = "idle" | "submitting" | "success" | "error";
 
 const fieldClasses =
-  "w-full border border-line bg-void px-4 py-3 text-bone placeholder:text-bone-dim/50 focus:border-bone focus:outline-none";
+  "w-full border border-line bg-void px-4 py-3 text-bone placeholder:text-bone-dim/50 focus:border-bone focus:outline-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-bone";
 
 function UserIcon() {
   return (
@@ -89,7 +89,11 @@ export function ContactForm({
 
   if (status === "success") {
     return (
-      <div className="border border-line bg-void px-6 py-8 font-mono text-sm text-bone">
+      <div
+        role="status"
+        aria-live="polite"
+        className="border border-line bg-void px-6 py-8 font-mono text-sm text-bone"
+      >
         {t.success}
       </div>
     );
@@ -166,6 +170,7 @@ export function ContactForm({
             className="text-bone underline decoration-line underline-offset-4 transition-colors hover:decoration-bone"
           >
             {t.gdprLinkText}
+            <span className="sr-only"> (opens in a new tab)</span>
           </Link>
           {t.gdprSuffix}
         </span>

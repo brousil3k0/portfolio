@@ -82,7 +82,8 @@ export function ContactFooter({ lang }: { lang: Lang }) {
                     rel="noopener noreferrer"
                     className="text-bone underline decoration-line underline-offset-4 transition-colors hover:decoration-bone"
                   >
-                    {t.nav.resume} ↗
+                    {t.nav.resume} <span aria-hidden="true">↗</span>
+                    <span className="sr-only"> (opens in a new tab)</span>
                   </a>
                 </li>
                 <li>
@@ -92,7 +93,8 @@ export function ContactFooter({ lang }: { lang: Lang }) {
                     rel="noopener noreferrer"
                     className="text-bone underline decoration-line underline-offset-4 transition-colors hover:decoration-bone"
                   >
-                    {t.contact.linkedin} ↗
+                    {t.contact.linkedin} <span aria-hidden="true">↗</span>
+                    <span className="sr-only"> (opens in a new tab)</span>
                   </a>
                 </li>
                 <li>
@@ -102,7 +104,8 @@ export function ContactFooter({ lang }: { lang: Lang }) {
                     rel="noopener noreferrer"
                     className="text-bone underline decoration-line underline-offset-4 transition-colors hover:decoration-bone"
                   >
-                    {t.contact.github} ↗
+                    {t.contact.github} <span aria-hidden="true">↗</span>
+                    <span className="sr-only"> (opens in a new tab)</span>
                   </a>
                 </li>
                 <li>
@@ -112,7 +115,8 @@ export function ContactFooter({ lang }: { lang: Lang }) {
                     rel="noopener noreferrer"
                     className="text-bone underline decoration-line underline-offset-4 transition-colors hover:decoration-bone"
                   >
-                    {t.contact.orcid} ↗
+                    {t.contact.orcid} <span aria-hidden="true">↗</span>
+                    <span className="sr-only"> (opens in a new tab)</span>
                   </a>
                 </li>
                 <li>

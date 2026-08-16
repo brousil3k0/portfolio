@@ -16,6 +16,30 @@
   color: var(--color-void);
 }
 
+/* Baseline keyboard-focus indicator for anything that doesn't define its own
+   (most interactive elements here do; this is the fallback, not the only
+   line of defense). */
+:focus-visible {
+  outline: 2px solid var(--color-bone);
+  outline-offset: 2px;
+}
+
+/* Belt-and-braces reduced-motion guard: TechGrid's scramble and
+   SmoothScrollLinks' scroll already check prefers-reduced-motion in JS and
+   skip themselves entirely, but this catches any plain CSS transition/
+   animation (hover states, the mobile menu icon, native `scroll-smooth`)
+   that doesn't have its own check. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
 
 /* Slim, low-contrast horizontal scrollbar for the projects carousel — kept
    visible (not hidden) so scrollability stays discoverable, just quieter

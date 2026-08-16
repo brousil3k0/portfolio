@@ -73,7 +73,12 @@ export function ProjectsSection({ lang }: { lang: Lang }) {
         <div className="relative mt-10">
           <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 top-full h-4 bg-void/90 blur-md" />
           <div className="relative flex flex-wrap gap-1.5">
-            <button type="button" onClick={() => setActiveTag(null)} className={filterButtonClass(activeTag === null)}>
+            <button
+              type="button"
+              onClick={() => setActiveTag(null)}
+              aria-pressed={activeTag === null}
+              className={filterButtonClass(activeTag === null)}
+            >
               {p.filterAll}
             </button>
             {tagKeys.map((key) => (
@@ -81,6 +86,7 @@ export function ProjectsSection({ lang }: { lang: Lang }) {
                 key={key}
                 type="button"
                 onClick={() => setActiveTag(key)}
+                aria-pressed={activeTag === key}
                 className={filterButtonClass(activeTag === key)}
               >
                 {p.tags[key]}
@@ -88,6 +94,13 @@ export function ProjectsSection({ lang }: { lang: Lang }) {
             ))}
           </div>
         </div>
+
+        {/* Announces the filtered count for screen reader users — the
+            filter buttons only change a visual list below, with no page
+            navigation or focus move to signal that anything happened. */}
+        <p role="status" aria-live="polite" className="sr-only">
+          {filtered.length} {p.heading}
+        </p>
 
         <div className="relative mt-12">
           <div className="relative">

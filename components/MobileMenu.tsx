@@ -68,11 +68,15 @@ export function MobileMenu({ lang, path = "/" }: { lang: Lang; path?: string }) 
             scroll — Link's own client-side routing would preempt it. */}
         {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
         <a href="/#skills" className="transition-colors hover:text-bone" onClick={close}>
-          ${t.nav.skills}$
+          <span aria-hidden="true">$</span>
+          {t.nav.skills}
+          <span aria-hidden="true">$</span>
         </a>
         {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
         <a href="/#projects" className="transition-colors hover:text-bone" onClick={close}>
-          ~{t.nav.projects}~
+          <span aria-hidden="true">~</span>
+          {t.nav.projects}
+          <span aria-hidden="true">~</span>
         </a>
         <Link
           href="/resume"
@@ -81,7 +85,10 @@ export function MobileMenu({ lang, path = "/" }: { lang: Lang; path?: string }) 
           className="transition-colors hover:text-bone"
           onClick={close}
         >
-          §{t.nav.resume}§
+          <span aria-hidden="true">§</span>
+          {t.nav.resume}
+          <span aria-hidden="true">§</span>
+          <span className="sr-only"> (opens in a new tab)</span>
         </Link>
         {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
         <a
@@ -89,7 +96,9 @@ export function MobileMenu({ lang, path = "/" }: { lang: Lang; path?: string }) 
           className="inline-flex w-fit bg-bone px-4 py-2 text-void transition-colors hover:bg-bone-dim"
           onClick={close}
         >
-          !{t.nav.contactMe}!
+          <span aria-hidden="true">!</span>
+          {t.nav.contactMe}
+          <span aria-hidden="true">!</span>
         </a>
 
         <LangSwitch lang={lang} path={path} className="mt-auto text-base" />
