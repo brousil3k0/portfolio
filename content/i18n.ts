@@ -2,9 +2,16 @@ import { siteConfig } from "@/content/site";
 
 export type Lang = "en" | "cs";
 
-const MECHANICAL_SKILLS = ["SolidWorks", "Fusion 360", "GD&T", "FEA", "CNC Machining", "Sheet Metal"];
-const ELECTRICAL_SKILLS = ["KiCad", "Altium", "ESP32", "STM32", "Arduino", "Power Electronics"];
-const SOFTWARE_SKILLS = ["Python", "TypeScript", "React", "Node.js", "C / C++", "Embedded Firmware"];
+// Kept as separate lists per surface (not shared constants) so the
+// homepage's skill tags and the resume's skill groups can each be edited
+// without changing the other.
+const HOME_MECHANICAL_SKILLS = ["SolidWorks", "Fusion 360", "GD&T", "3D Printing", "Technical Documentation"];
+const HOME_ELECTRICAL_SKILLS = ["KiCad", "PCB Design", "ESP32", "STM32", "Embedded Systems"];
+const HOME_SOFTWARE_SKILLS = ["Python", "TypeScript", "React", "Node.js", "C / C++", "Embedded Firmware"];
+
+const RESUME_MECHANICAL_SKILLS = ["SolidWorks", "Fusion 360", "GD&T", "3D Printing", "Technical Documentation"];
+const RESUME_ELECTRICAL_SKILLS = ["KiCad", "PCB Design", "ESP32", "STM32", "Embedded Systems"];
+const RESUME_SOFTWARE_SKILLS = ["Python", "TypeScript", "React", "Node.js", "C / C++", "Embedded Firmware"];
 
 // Placeholder body copy for project pages — real Lorem Ipsum, not a
 // translation, since it's filler either way regardless of site language.
@@ -54,7 +61,7 @@ export const dictionary = {
         "Tolerances, surface finishes, and fits that hold up off the screen.",
         "Parts designed for how they'll actually be manufactured.",
       ],
-      skills: MECHANICAL_SKILLS,
+      skills: HOME_MECHANICAL_SKILLS,
     },
     electrical: {
       heading: "Electrical Engineer",
@@ -64,7 +71,7 @@ export const dictionary = {
         "Firmware loops that turn raw signals into decisions.",
         "Boards designed to be built, tested, and debugged.",
       ],
-      skills: ELECTRICAL_SKILLS,
+      skills: HOME_ELECTRICAL_SKILLS,
     },
     software: {
       heading: "Software Engineer",
@@ -74,7 +81,7 @@ export const dictionary = {
         "Clean interfaces between firmware and the outside world.",
         "Code written to be read again in six months.",
       ],
-      skills: SOFTWARE_SKILLS,
+      skills: HOME_SOFTWARE_SKILLS,
     },
     contact: {
       ctaHeadingLine1: "Got a project in mind?",
@@ -131,28 +138,28 @@ export const dictionary = {
     resume: {
       back: "Back",
       summary:
-        "Engineer working across mechanical design, electronics, and firmware/software — I take products from a sketch to a working prototype without handing the problem off between disciplines.",
+        "I'm a student who takes a project from pencil and paper, through building the mechanical and electrical parts, to a finished product.",
       location: "Czech Republic",
       education: "Education",
       experience: "Experience",
       skills: "Skills",
       educationEntries: [
         {
-          school: "Czech Technical University in Prague",
-          program: "B.Sc. Mechanical Engineering",
-          period: "2021 — 2025",
-          detail: "Focus on machine design and mechatronics.",
+          school: "Škoda Auto a.s., Secondary Vocational School of Mechanical Engineering (branch)",
+          program: "26-41-M/01 Electrical Engineering – IT Technician",
+          period: "2025 — 2029 (ongoing)",
+          detail: "Four-year secondary school program, concluding with the Maturita school-leaving exam.",
         },
       ],
       experienceEntries: [
         {
-          org: "Placeholder Robotics s.r.o.",
-          role: "Mechatronics Engineer (Intern)",
+          org: "EcoWheel s.r.o.",
+          role: "Electromechanical Technician",
           period: "2024 — Present",
           bullets: [
-            "Designed and machined structural components for a small mobile robot platform, iterating from FEA to production drawings.",
-            "Built the sensor interconnect board and firmware driving motor control and telemetry.",
-            "Wrote the internal dashboard used to monitor test runs.",
+            "Diagnosed and verified reported faults, then proposed the most cost-effective fix.",
+            "Carried out repairs and verified they were successful.",
+            "Documented completed repairs and logged the replacement parts used.",
           ],
         },
         {
@@ -167,18 +174,24 @@ export const dictionary = {
         },
       ],
       skillGroups: [
-        { category: "Mechanical", items: MECHANICAL_SKILLS },
-        { category: "Electrical", items: ELECTRICAL_SKILLS },
-        { category: "Software", items: SOFTWARE_SKILLS },
+        { category: "Mechanical", items: RESUME_MECHANICAL_SKILLS },
+        { category: "Electrical", items: RESUME_ELECTRICAL_SKILLS },
+        { category: "Software", items: RESUME_SOFTWARE_SKILLS },
       ],
       certifications: {
         title: "Certifications",
         entries: [
           {
-            name: "Placeholder Certification",
-            issuer: "Placeholder Institute",
-            year: "2025",
-            file: "/certificates/placeholder-certification.pdf",
+            name: "Fundamentals of Hybrid and Battery Electric Vehicles",
+            issuer: "Denso",
+            year: "2026",
+            file: "/certificates/hybrid.pdf",
+          },
+          {
+            name: "3D Printing and Modeling for Beginners (MK3S+)",
+            issuer: "Prusa Research a.s.",
+            year: "2023",
+            file: "/certificates/prusa.pdf",
           },
         ],
       },
@@ -347,34 +360,34 @@ export const dictionary = {
       scroll: "Scroll",
     },
     mechanical: {
-      heading: "Strojní inženýr",
+      heading: "Strojírenství",
       body: "Pracuji napříč celým cyklem strojního návrhu — od modelování přes tolerance až po ověření dílu ještě předtím, než se dostane na obráběcí stroj, takže první kus bývá zároveň tím posledním.",
       bullets: [
         "Od konceptu přes FEA až po výrobní výkresy.",
         "Tolerance, povrchy a uložení, které fungují i mimo obrazovku.",
         "Díly navržené podle toho, jak se skutečně vyrábí.",
       ],
-      skills: MECHANICAL_SKILLS,
+      skills: HOME_MECHANICAL_SKILLS,
     },
     electrical: {
-      heading: "Elektroinženýr",
+      heading: "Elektrotechnika",
       body: "Navrhuji obvody a firmware, které produktu dávají smysly i reflexy — od výkonového stupně, který ho drží v chodu, až po kód, který rozhoduje, co se stane dál.",
       bullets: [
         "Schémata, výkonové stupně a snímací frontendy.",
         "Firmwarové smyčky, které mění signály na rozhodnutí.",
         "Desky navržené tak, aby šly postavit, otestovat a odladit.",
       ],
-      skills: ELECTRICAL_SKILLS,
+      skills: HOME_ELECTRICAL_SKILLS,
     },
     software: {
-      heading: "Softwarový inženýr",
+      heading: "Programování a software",
       body: "Vytvářím softwarovou vrstvu mezi hardwarem a lidmi, kteří ho používají — dashboardy, nástroje a služby, které mění syrové signály na něco čitelného.",
       bullets: [
         "Dashboardy a nástroje, které dělají hardware čitelným.",
         "Čistá rozhraní mezi firmwarem a okolním světem.",
         "Kód psaný tak, aby se dal číst i za půl roku.",
       ],
-      skills: SOFTWARE_SKILLS,
+      skills: HOME_SOFTWARE_SKILLS,
     },
     contact: {
       ctaHeadingLine1: "Máte nápad na projekt?",
@@ -431,7 +444,7 @@ export const dictionary = {
     resume: {
       back: "Zpět",
       summary:
-        "Inženýr pracující napříč strojním návrhem, elektronikou a firmwarem/softwarem — dovedu produkt od skici k funkčnímu prototypu bez předávání mezi obory.",
+        "Jsem student, který vytvoří projekt od papíru s tužkou, přes výrobu mechanických a elektrických součástí, po hotový produkt.",
       location: "Česká republika",
       education: "Vzdělání",
       experience: "Praxe",
@@ -446,13 +459,13 @@ export const dictionary = {
       ],
       experienceEntries: [
         {
-          org: "Placeholder Robotics s.r.o.",
-          role: "Mechatronik (stáž)",
+          org: "EcoWheel s.r.o.",
+          role: "Elektromechanik",
           period: "2024 — nyní",
           bullets: [
-            "Navrhoval a obráběl konstrukční díly pro malou mobilní robotickou platformu, iterace od FEA po výrobní výkresy.",
-            "Vytvořil propojovací desku senzorů a firmware pro řízení motorů a telemetrii.",
-            "Napsal interní dashboard pro sledování testovacích jízd.",
+            "Diagnostika a ověření avizované poruchy, nárvh nejméně nákladného řešení",
+            "Provedení opravy a ověření její úšspěšnosti",
+            "Zpracování dokumentace o provedené opravě a výpis použitých náhradních dílů.",
           ],
         },
         {
@@ -467,9 +480,9 @@ export const dictionary = {
         },
       ],
       skillGroups: [
-        { category: "Strojní", items: MECHANICAL_SKILLS },
-        { category: "Elektro", items: ELECTRICAL_SKILLS },
-        { category: "Software", items: SOFTWARE_SKILLS },
+        { category: "Strojní", items: RESUME_MECHANICAL_SKILLS },
+        { category: "Elektro", items: RESUME_ELECTRICAL_SKILLS },
+        { category: "Software", items: RESUME_SOFTWARE_SKILLS },
       ],
       certifications: {
         title: "Certifikace",
