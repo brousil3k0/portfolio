@@ -50,7 +50,7 @@ const HERO_DOODLES = [
   },
   {
     src: "/hero/cross.png",
-    className: "top-[55%] right-[13%] w-9 rotate-[6deg] sm:w-11 md:right-[19%] md:w-12 lg:w-14",
+    className: "top-[55%] right-[9%] w-9 rotate-[6deg] sm:w-11 md:right-[15%] md:w-12 lg:w-14",
   },
   {
     src: "/hero/hastag.png",
