@@ -1,75 +1,68 @@
-import type { GlyphSpot } from "@/components/grid/TechGrid";
-import { TechGrid } from "@/components/grid/TechGrid";
-import { BINARY_GLYPHS, ELECTRICAL_VOCAB, MECHANICAL_VOCAB } from "@/components/grid/vocab";
 import { ScrollCue } from "@/components/ui/ScrollCue";
 import type { Lang } from "@/content/i18n";
 import { getDictionary } from "@/content/i18n";
 import { siteConfig } from "@/content/site";
 import { cn } from "@/lib/cn";
-import { ABS_CONTAINER, CONTAINER } from "@/lib/layout";
+import { CONTAINER } from "@/lib/layout";
 
 /** Accent color for highlighted slogan words — deliberately outside the
  * bone/void palette so "idea" and "product" read as the two poles of the
  * slogan's arc, not just emphasized text. */
 const SLOGAN_ACCENT = "#40e0d0";
 
-// Three vocabularies (binary / mechanical / electrical), each anchored to
-// its own spot so they cluster into distinct regions that blend into each
-// other at the edges, rather than interleaving word-by-word. Binary gets a
-// bigger, more dominant footprint (large sigma); mechanical/electrical stay
-// tighter and more separated from each other (small sigma) — binary's own
-// reach is what keeps the three regions interfering with each other at
-// their edges rather than reading as three fully isolated zones.
-const HERO_SPOTS: GlyphSpot[] = [
-  { glyphs: BINARY_GLYPHS, center: [0.22, 0.3], sigma: 0.52 },
-  { glyphs: MECHANICAL_VOCAB, center: [0.82, 0.2], sigma: 0.32 },
-  { glyphs: ELECTRICAL_VOCAB, center: [0.5, 0.87], sigma: 0.32 },
-];
+/** Faint drafting-table grid behind the hero — a plain, static graph-paper
+ * pattern (not the animated glyph TechGrid the rest of the page uses)
+ * fading out toward the edges via a radial mask so it reads as an ambient
+ * surface, not a hard-edged rectangle. */
+function BlueprintGrid() {
+  const maskImage = "radial-gradient(ellipse at 50% 40%, black 0%, transparent 72%)";
+  return (
+    <div
+      aria-hidden="true"
+      className="pointer-events-none absolute inset-0"
+      style={{
+        backgroundImage:
+          "linear-gradient(to right, var(--color-line) 1px, transparent 1px), linear-gradient(to bottom, var(--color-line) 1px, transparent 1px)",
+        backgroundSize: "48px 48px",
+        opacity: 0.5,
+        WebkitMaskImage: maskImage,
+        maskImage,
+      }}
+    />
+  );
+}
 
 export function Hero({ lang }: { lang: Lang }) {
   const t = getDictionary(lang);
 
   return (
     <section className="relative flex min-h-[100svh] flex-col overflow-hidden bg-void">
-      <div className={ABS_CONTAINER}>
-        <TechGrid
-          mode="words"
-          spots={HERO_SPOTS}
-          seed="hero"
-          rows={24}
-          cols={36}
-          shadeSpread={2.2}
-          shadeBands={5}
-          shapeScale={0.9}
-          warpAmount={0.3}
-          boundInner={0.68}
-          boundOuter={1.05}
-          shapeThreshold={0.58}
-          className="inset-0"
-        />
-      </div>
+      <BlueprintGrid />
 
       <div className={`${CONTAINER} relative z-10 flex flex-1 flex-col pt-28 pb-8`}>
         <div className="flex flex-1 flex-col">
           <div className="relative mx-auto w-fit max-w-4xl pt-24 text-center sm:pt-32 md:pt-40">
-            <div aria-hidden="true" className="absolute -inset-6 rounded-[2rem] bg-void/85 blur-xl" />
-            <h1 className="relative font-display text-base font-normal leading-[1.25] tracking-tight text-bone sm:text-[32px] md:text-[38px] lg:text-[52px] xl:text-[58px]">
-              <span className="block whitespace-nowrap">
+            <h1 className="relative font-display text-base font-medium leading-[1.25] tracking-tight text-bone sm:text-[32px] md:text-[38px] lg:text-[52px] xl:text-[58px]">
+              {/* A slight, deliberate left/right offset on each line —
+                  enough to read as an intentional off-center composition,
+                  not a layout bug. Pure transform (no margin) so it doesn't
+                  disturb the block's own centered width. */}
+              <span className="block -translate-x-3 whitespace-nowrap sm:-translate-x-4 md:-translate-x-6 lg:-translate-x-8">
                 {t.hero.sloganLine1.map((seg, i) => (
                   <span
                     key={i}
-                    className={cn("bold" in seg && seg.bold && "font-bold")}
+                    className={cn("bold" in seg && seg.bold && "font-extrabold")}
                     style={"accent" in seg && seg.accent ? { color: SLOGAN_ACCENT } : undefined}
                   >
                     {seg.text}
                   </span>
                 ))}
               </span>
-              <span className="block whitespace-nowrap">
+              <span className="block translate-x-3 whitespace-nowrap sm:translate-x-4 md:translate-x-6 lg:translate-x-8">
                 {t.hero.sloganLine2.map((seg, i) => (
                   <span
                     key={i}
-                    className={cn("bold" in seg && seg.bold && "font-bold")}
+                    className={cn("bold" in seg && seg.bold && "font-extrabold")}
                     style={"accent" in seg && seg.accent ? { color: SLOGAN_ACCENT } : undefined}
                   >
                     {seg.text}
@@ -86,7 +79,6 @@ export function Hero({ lang }: { lang: Lang }) {
               h1's shrink-to-fit width and end up off-center relative to the
               page. */}
           <div className="relative mt-auto w-full max-w-6xl pb-28 sm:pb-32 md:pb-36">
-            <div aria-hidden="true" className="absolute -inset-3 rounded-xl bg-void/85 blur-md" />
             <p className="relative text-center font-mono text-base uppercase tracking-[0.2em] text-bone-dim sm:text-lg md:text-xl">
               {siteConfig.name}
             </p>
