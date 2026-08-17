@@ -1,5 +1,5 @@
 import { TechGrid } from "@/components/grid/TechGrid";
-import { MECHANICAL_VOCAB } from "@/components/grid/vocab";
+import { MECHANICAL_BINARY } from "@/components/grid/vocab";
 import { SkillTag } from "@/components/ui/SkillTag";
 import type { Lang } from "@/content/i18n";
 import { getDictionary } from "@/content/i18n";
@@ -12,13 +12,17 @@ export function MechanicalSection({ lang }: { lang: Lang }) {
     <section id="skills" className="relative scroll-mt-16 overflow-hidden bg-void">
       <div className={ABS_CONTAINER}>
         <TechGrid
-          mode="words"
-          glyphs={MECHANICAL_VOCAB}
+          mode="binary"
+          glyphs={MECHANICAL_BINARY}
           seed="mechanical"
-          rows={26}
-          cols={23}
+          rows={32}
+          cols={60}
           align="right"
+          shadeSpread={2}
+          shadeBands={5}
           accentColor="#2E3561"
+          swapIntervalMs={70}
+          swapFraction={0.6}
           className="inset-0"
         />
       </div>

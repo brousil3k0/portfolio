@@ -1,5 +1,5 @@
 import { TechGrid } from "@/components/grid/TechGrid";
-import { ELECTRICAL_VOCAB } from "@/components/grid/vocab";
+import { ELECTRICAL_BINARY } from "@/components/grid/vocab";
 import { SkillTag } from "@/components/ui/SkillTag";
 import type { Lang } from "@/content/i18n";
 import { getDictionary } from "@/content/i18n";
@@ -12,13 +12,17 @@ export function ElectricalSection({ lang }: { lang: Lang }) {
     <section className="relative overflow-hidden bg-void">
       <div className={ABS_CONTAINER}>
         <TechGrid
-          mode="words"
-          glyphs={ELECTRICAL_VOCAB}
+          mode="binary"
+          glyphs={ELECTRICAL_BINARY}
           seed="electrical"
-          rows={26}
-          cols={23}
+          rows={32}
+          cols={60}
           align="left"
+          shadeSpread={2}
+          shadeBands={5}
           accentColor="#E60000"
+          swapIntervalMs={70}
+          swapFraction={0.6}
           className="inset-0"
         />
       </div>
