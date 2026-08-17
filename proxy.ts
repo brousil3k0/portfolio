@@ -10,6 +10,14 @@ import type { NextRequest } from "next/server";
 // headers() — it has to be minted per request, which only proxy can do.
 export function proxy(request: NextRequest) {
   const nonce = Buffer.from(crypto.randomUUID()).toString("base64");
+  // No 'strict-dynamic' — every script here is either same-origin
+  // (file-sourced chunks, covered by 'self') or an inline RSC-streaming tag
+  // (covered by the nonce), so 'strict-dynamic''s extra propagation model
+  // buys nothing here. It also has a rocky cross-browser history (one of
+  // the last CSP3 features WebKit shipped, with real Safari bugs mishandling
+  // the whole policy when it's present) — dropping it trades a marginal,
+  // unused hardening feature for actually working in Safari.
+  //
   // Turbopack's dev-mode module runtime (HMR, source-mapped stack traces)
   // evaluates modules via eval()/new Function() — real in dev only. Next
   // itself confirms this in the console: "React will never use eval() in
@@ -17,8 +25,8 @@ export function proxy(request: NextRequest) {
   // production CSP fully strict.
   const scriptSrc =
     process.env.NODE_ENV === "development"
-      ? `'self' 'nonce-${nonce}' 'strict-dynamic' 'unsafe-eval'`
-      : `'self' 'nonce-${nonce}' 'strict-dynamic'`;
+      ? `'self' 'nonce-${nonce}' 'unsafe-eval'`
+      : `'self' 'nonce-${nonce}'`;
   const csp = `
     default-src 'self';
     script-src ${scriptSrc};
