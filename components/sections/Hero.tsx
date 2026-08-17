@@ -28,7 +28,7 @@ function BlueprintGrid() {
         backgroundImage:
           "linear-gradient(to right, var(--color-bone-dim) 1px, transparent 1px), linear-gradient(to bottom, var(--color-bone-dim) 1px, transparent 1px)",
         backgroundSize: "48px 48px",
-        opacity: 0.45,
+        opacity: 0.28,
         WebkitMaskImage: maskImage,
         maskImage,
       }}
@@ -85,7 +85,7 @@ export function Hero({ lang }: { lang: Lang }) {
                   enough to read as an intentional off-center composition,
                   not a layout bug. Pure transform (no margin) so it doesn't
                   disturb the block's own centered width. */}
-              <span className="block -translate-x-10 whitespace-nowrap sm:-translate-x-14 md:-translate-x-20 lg:-translate-x-28">
+              <span className="block -translate-x-14 whitespace-nowrap sm:-translate-x-20 md:-translate-x-28 lg:-translate-x-36">
                 {t.hero.sloganLine1.map((seg, i) => (
                   <span
                     key={i}
