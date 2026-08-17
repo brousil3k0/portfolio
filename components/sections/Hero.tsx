@@ -5,7 +5,13 @@ import { ScrollCue } from "@/components/ui/ScrollCue";
 import type { Lang } from "@/content/i18n";
 import { getDictionary } from "@/content/i18n";
 import { siteConfig } from "@/content/site";
+import { cn } from "@/lib/cn";
 import { ABS_CONTAINER, CONTAINER } from "@/lib/layout";
+
+/** Accent color for highlighted slogan words — deliberately outside the
+ * bone/void palette so "idea" and "product" read as the two poles of the
+ * slogan's arc, not just emphasized text. */
+const SLOGAN_ACCENT = "#40e0d0";
 
 // Three vocabularies (binary / mechanical / electrical), each anchored to
 // its own spot so they cluster into distinct regions that blend into each
@@ -45,19 +51,27 @@ export function Hero({ lang }: { lang: Lang }) {
 
       <div className={`${CONTAINER} relative z-10 flex flex-1 flex-col pt-28 pb-8`}>
         <div className="flex flex-1 flex-col">
-          <div className="relative w-fit max-w-6xl pt-24 sm:pt-32 md:pt-40">
+          <div className="relative mx-auto w-fit max-w-4xl pt-24 text-center sm:pt-32 md:pt-40">
             <div aria-hidden="true" className="absolute -inset-6 rounded-[2rem] bg-void/85 blur-xl" />
             <h1 className="relative font-display text-base font-normal leading-[1.25] tracking-tight text-bone sm:text-[32px] md:text-[38px] lg:text-[52px] xl:text-[58px]">
               <span className="block whitespace-nowrap">
                 {t.hero.sloganLine1.map((seg, i) => (
-                  <span key={i} className={"bold" in seg && seg.bold ? "font-bold" : undefined}>
+                  <span
+                    key={i}
+                    className={cn("bold" in seg && seg.bold && "font-bold")}
+                    style={"accent" in seg && seg.accent ? { color: SLOGAN_ACCENT } : undefined}
+                  >
                     {seg.text}
                   </span>
                 ))}
               </span>
-              <span className="ml-16 block whitespace-nowrap sm:ml-28 md:ml-40 lg:ml-56 xl:ml-64">
+              <span className="block whitespace-nowrap">
                 {t.hero.sloganLine2.map((seg, i) => (
-                  <span key={i} className={"bold" in seg && seg.bold ? "font-bold" : undefined}>
+                  <span
+                    key={i}
+                    className={cn("bold" in seg && seg.bold && "font-bold")}
+                    style={"accent" in seg && seg.accent ? { color: SLOGAN_ACCENT } : undefined}
+                  >
                     {seg.text}
                   </span>
                 ))}

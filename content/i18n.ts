@@ -41,16 +41,13 @@ export const dictionary = {
     nav: { resume: "RESUME", skills: "SKILLS", projects: "PROJECTS", contactMe: "CONTACT ME" },
     hero: {
       // Segmented (not a plain string) so the key nouns can render bold
-      // while the connecting words are lighter — `bold` defaults to false
-      // when omitted.
-      sloganLine1: [
-        { text: "I design the " },
-        { text: "part", bold: true },
-        { text: ", the " },
-        { text: "board", bold: true },
-        { text: "," },
+      // and/or accent-colored while the connecting words are lighter —
+      // `bold`/`accent` default to false when omitted.
+      sloganLine1: [{ text: "From " }, { text: "idea", bold: true, accent: true }, { text: " on paper" }],
+      sloganLine2: [
+        { text: "to fully working " },
+        { text: "product", bold: true, accent: true },
       ],
-      sloganLine2: [{ text: "and the " }, { text: "code", bold: true }, { text: " that runs it." }],
       scroll: "Scroll",
     },
     mechanical: {
@@ -355,8 +352,12 @@ export const dictionary = {
   cs: {
     nav: { resume: "ŽIVOTOPIS", skills: "DOVEDNOSTI", projects: "PROJEKTY", contactMe: "NAPIŠTE MI" },
     hero: {
-      sloganLine1: [{ text: "Navrhnu " }, { text: "součást", bold: true }, { text: ", " }, { text: "řídící systém", bold: true }],
-      sloganLine2: [{ text: "a jeho " }, { text: "firmware", bold: true }, { text: "." }],
+      sloganLine1: [{ text: "Z " }, { text: "nápadu", bold: true, accent: true }, { text: " na papíře" }],
+      sloganLine2: [
+        { text: "po plně funkční " },
+        { text: "produkt", bold: true, accent: true },
+        { text: "." },
+      ],
       scroll: "Scroll",
     },
     mechanical: {
