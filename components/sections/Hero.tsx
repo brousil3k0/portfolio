@@ -24,7 +24,7 @@ function BlueprintGrid() {
         backgroundImage:
           "linear-gradient(to right, var(--color-line) 1px, transparent 1px), linear-gradient(to bottom, var(--color-line) 1px, transparent 1px)",
         backgroundSize: "48px 48px",
-        opacity: 0.5,
+        opacity: 0.2,
         WebkitMaskImage: maskImage,
         maskImage,
       }}
