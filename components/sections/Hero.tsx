@@ -85,7 +85,7 @@ export function Hero({ lang }: { lang: Lang }) {
                   enough to read as an intentional off-center composition,
                   not a layout bug. Pure transform (no margin) so it doesn't
                   disturb the block's own centered width. */}
-              <span className="block -translate-x-3 whitespace-nowrap sm:-translate-x-4 md:-translate-x-6 lg:-translate-x-8">
+              <span className="block -translate-x-6 whitespace-nowrap sm:-translate-x-8 md:-translate-x-12 lg:-translate-x-16">
                 {t.hero.sloganLine1.map((seg, i) => (
                   <span
                     key={i}
@@ -96,7 +96,7 @@ export function Hero({ lang }: { lang: Lang }) {
                   </span>
                 ))}
               </span>
-              <span className="block translate-x-3 whitespace-nowrap sm:translate-x-4 md:translate-x-6 lg:translate-x-8">
+              <span className="block translate-x-6 whitespace-nowrap sm:translate-x-8 md:translate-x-12 lg:translate-x-16">
                 {t.hero.sloganLine2.map((seg, i) => (
                   <span
                     key={i}
