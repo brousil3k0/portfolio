@@ -24,11 +24,46 @@ function BlueprintGrid() {
         backgroundImage:
           "linear-gradient(to right, var(--color-line) 1px, transparent 1px), linear-gradient(to bottom, var(--color-line) 1px, transparent 1px)",
         backgroundSize: "48px 48px",
-        opacity: 0.2,
+        opacity: 0.35,
         WebkitMaskImage: maskImage,
         maskImage,
       }}
     />
+  );
+}
+
+/** Hand-drawn marginalia scattered around the slogan — the same "sketch on
+ * paper" idea the copy itself describes, made literal. Positions are tuned
+ * to sit in the open space around the two offset title lines, not on top of
+ * them; each carries its own slight rotation so they read as dropped-in
+ * annotations, not a tidy icon row. */
+const HERO_DOODLES = [
+  {
+    src: "/hero/doodle.png",
+    className: "top-[12%] left-[4%] w-20 -rotate-[8deg] sm:w-24 md:top-[16%] md:left-[7%] md:w-32 lg:w-36",
+  },
+  {
+    src: "/hero/hastag.png",
+    className: "top-[14%] right-[6%] w-14 rotate-[10deg] sm:w-16 md:top-[18%] md:right-[9%] md:w-20 lg:w-24",
+  },
+  {
+    src: "/hero/cross.png",
+    className: "bottom-[30%] left-[7%] w-10 -rotate-[12deg] sm:w-12 md:bottom-[32%] md:left-[10%] md:w-14 lg:w-16",
+  },
+  {
+    src: "/hero/tick.png",
+    className: "bottom-[26%] right-[5%] w-14 rotate-[9deg] sm:w-16 md:bottom-[28%] md:right-[8%] md:w-20 lg:w-24",
+  },
+] as const;
+
+function HeroDoodles() {
+  return (
+    <div aria-hidden="true" className="pointer-events-none absolute inset-0 z-0">
+      {HERO_DOODLES.map((d) => (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img key={d.src} src={d.src} alt="" className={cn("absolute drop-shadow-[0_0_18px_rgba(7,7,7,0.9)]", d.className)} />
+      ))}
+    </div>
   );
 }
 
@@ -38,6 +73,7 @@ export function Hero({ lang }: { lang: Lang }) {
   return (
     <section className="relative flex min-h-[100svh] flex-col overflow-hidden bg-void">
       <BlueprintGrid />
+      <HeroDoodles />
 
       <div className={`${CONTAINER} relative z-10 flex flex-1 flex-col pt-28 pb-8`}>
         <div className="flex flex-1 flex-col">
