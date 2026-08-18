@@ -33,6 +33,7 @@ export function Hero({ lang }: { lang: Lang }) {
           warpAmount={0.5}
           boundInner={0.3}
           boundOuter={0.8}
+          centerU={0.64}
           accentColor={SLOGAN_ACCENT}
           swapIntervalMs={70}
           swapFraction={0.6}
