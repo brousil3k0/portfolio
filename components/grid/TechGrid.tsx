@@ -219,6 +219,7 @@ function buildRows({
   boundOuter = BOUND_OUTER,
   shapeThreshold = SHAPE_THRESHOLD,
   centerU = 0.5,
+  centerV = 0.5,
 }: {
   mode: "binary" | "words";
   glyphs: string[];
@@ -236,6 +237,7 @@ function buildRows({
   boundOuter?: number;
   shapeThreshold?: number;
   centerU?: number;
+  centerV?: number;
 }): Row[] {
   const rng = createSeededRng(seed);
   const res = noiseRes(cols, rows, shapeScale);
@@ -283,7 +285,7 @@ function buildRows({
         // this, two adjacent sections' fields can both show glyphs on their
         // shared boundary row, reading as a visible seam between them.
         const dx = (u - centerU) / 0.5;
-        const dy = (v - 0.5) / 0.5;
+        const dy = (v - centerV) / 0.5;
         const rDist = Math.sqrt(dx * dx + dy * dy);
         const bound = 1 - smoothstep(boundInner, boundOuter, rDist);
 
@@ -398,6 +400,7 @@ export function TechGrid({
   boundOuter,
   shapeThreshold,
   centerU = 0.5,
+  centerV = 0.5,
   swapIntervalMs = SWAP_INTERVAL_MS,
   spinDurationMs = SPIN_DURATION_MS,
   swapFraction = SWAP_FRACTION,
@@ -456,6 +459,9 @@ export function TechGrid({
    * direction, instead of relying on a narrower container to hard-crop it.
    * Defaults to 0.5 (true center). */
   centerU?: number;
+  /** Vertical counterpart to `centerU` (0..1). Defaults to 0.5 (true
+   * center). */
+  centerV?: number;
   /** Override the default scramble pace — lower is faster/more frantic.
    * Binary sections use this to read as a clearly "live" flicker instead of
    * a barely-perceptible change (a 0/1 swap has only two possible values). */
@@ -514,6 +520,7 @@ export function TechGrid({
         boundOuter,
         shapeThreshold,
         centerU,
+        centerV,
       }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [
@@ -531,6 +538,7 @@ export function TechGrid({
       boundOuter,
       shapeThreshold,
       centerU,
+      centerV,
       spots,
       glyphs,
     ],

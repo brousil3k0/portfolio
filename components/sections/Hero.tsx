@@ -18,22 +18,49 @@ export function Hero({ lang }: { lang: Lang }) {
 
   return (
     <section className="relative flex min-h-[100svh] flex-col overflow-hidden bg-void">
+      {/* Two independent, differently-seeded clusters placed on the same
+          upper-left/lower-right diagonal as the offset slogan lines below,
+          instead of one halo centered (or simply dragged to one side)
+          behind the centered text — a single center reads as a symmetric
+          mask, and a single off-center blob just reads as lopsided. Two
+          separate random shapes read as genuinely scattered while still
+          echoing the page's own asymmetric composition. */}
       <div className={ABS_CONTAINER}>
         <TechGrid
           mode="binary"
           glyphs={HERO_BINARY}
-          seed="hero"
+          seed="hero-a"
           rows={32}
           cols={60}
-          align="center"
           shadeSpread={2}
           shadeBands={5}
           shapeScale={1.15}
           shapeThreshold={0.52}
           warpAmount={0.5}
-          boundInner={0.3}
-          boundOuter={0.8}
-          centerU={0.64}
+          boundInner={0.18}
+          boundOuter={0.5}
+          centerU={0.26}
+          centerV={0.3}
+          accentColor={SLOGAN_ACCENT}
+          swapIntervalMs={70}
+          swapFraction={0.6}
+          className="inset-0"
+        />
+        <TechGrid
+          mode="binary"
+          glyphs={HERO_BINARY}
+          seed="hero-b"
+          rows={32}
+          cols={60}
+          shadeSpread={2}
+          shadeBands={5}
+          shapeScale={1.15}
+          shapeThreshold={0.52}
+          warpAmount={0.5}
+          boundInner={0.18}
+          boundOuter={0.5}
+          centerU={0.76}
+          centerV={0.72}
           accentColor={SLOGAN_ACCENT}
           swapIntervalMs={70}
           swapFraction={0.6}
