@@ -21,6 +21,9 @@ export function MechanicalSection({ lang }: { lang: Lang }) {
             align="center"
             shadeSpread={2}
             shadeBands={5}
+            shapeScale={0.55}
+            warpAmount={0.32}
+            boundInner={0.5}
             accentColor="#2E3561"
             swapIntervalMs={70}
             swapFraction={0.6}

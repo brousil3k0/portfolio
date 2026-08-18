@@ -21,7 +21,10 @@ export function ElectricalSection({ lang }: { lang: Lang }) {
             align="center"
             shadeSpread={2}
             shadeBands={5}
-            accentColor="#E60000"
+            shapeScale={0.55}
+            warpAmount={0.32}
+            boundInner={0.5}
+            accentColor="#c68346"
             swapIntervalMs={70}
             swapFraction={0.6}
             className="inset-0"
