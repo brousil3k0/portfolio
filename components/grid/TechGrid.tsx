@@ -411,7 +411,7 @@ export function TechGrid({
   rows?: number;
   cols?: number;
   fontSize?: number;
-  align?: "left" | "right";
+  align?: "left" | "right" | "center";
   fade?: FadeEdge;
   /** Multiplies the per-glyph opacity/weight jitter — higher values read as
    * more diverse shades of gray. Defaults to 1 (matches the reference
@@ -639,7 +639,14 @@ export function TechGrid({
           // A fade band (the footer's flame texture) must stretch full-width
           // edge to edge, not hug one side and shrink to its content width
           // like the halo grids do.
-          alignItems: fade !== "none" ? "stretch" : align === "right" ? "flex-end" : "flex-start",
+          alignItems:
+            fade !== "none"
+              ? "stretch"
+              : align === "right"
+                ? "flex-end"
+                : align === "center"
+                  ? "center"
+                  : "flex-start",
           // Halo (fade="none") stays centered in its box. The footer's
           // bottom-anchored band must hug the true bottom edge — centering
           // it here was leaving a gap between the glyphs and the page's
