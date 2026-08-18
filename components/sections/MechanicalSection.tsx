@@ -20,8 +20,9 @@ export function MechanicalSection({ lang }: { lang: Lang }) {
           align="center"
           shadeSpread={2}
           shadeBands={5}
-          shapeScale={0.5}
-          warpAmount={0.4}
+          shapeScale={1.15}
+          shapeThreshold={0.52}
+          warpAmount={0.5}
           boundInner={0.3}
           boundOuter={0.8}
           centerU={0.68}
