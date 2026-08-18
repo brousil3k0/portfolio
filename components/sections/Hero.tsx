@@ -19,25 +19,24 @@ export function Hero({ lang }: { lang: Lang }) {
   return (
     <section className="relative flex min-h-[100svh] flex-col overflow-hidden bg-void">
       <div className={ABS_CONTAINER}>
-        <div className="absolute inset-0 mx-auto max-w-3xl">
-          <TechGrid
-            mode="binary"
-            glyphs={HERO_BINARY}
-            seed="hero"
-            rows={32}
-            cols={60}
-            align="center"
-            shadeSpread={2}
-            shadeBands={5}
-            shapeScale={0.55}
-            warpAmount={0.32}
-            boundInner={0.5}
-            accentColor={SLOGAN_ACCENT}
-            swapIntervalMs={70}
-            swapFraction={0.6}
-            className="inset-0"
-          />
-        </div>
+        <TechGrid
+          mode="binary"
+          glyphs={HERO_BINARY}
+          seed="hero"
+          rows={32}
+          cols={60}
+          align="center"
+          shadeSpread={2}
+          shadeBands={5}
+          shapeScale={0.5}
+          warpAmount={0.4}
+          boundInner={0.3}
+          boundOuter={0.8}
+          accentColor={SLOGAN_ACCENT}
+          swapIntervalMs={70}
+          swapFraction={0.6}
+          className="inset-0"
+        />
       </div>
 
       <div className={`${CONTAINER} relative z-10 flex flex-1 flex-col pt-28 pb-8`}>

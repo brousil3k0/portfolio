@@ -218,6 +218,7 @@ function buildRows({
   boundInner = BOUND_INNER,
   boundOuter = BOUND_OUTER,
   shapeThreshold = SHAPE_THRESHOLD,
+  centerU = 0.5,
 }: {
   mode: "binary" | "words";
   glyphs: string[];
@@ -234,6 +235,7 @@ function buildRows({
   boundInner?: number;
   boundOuter?: number;
   shapeThreshold?: number;
+  centerU?: number;
 }): Row[] {
   const rng = createSeededRng(seed);
   const res = noiseRes(cols, rows, shapeScale);
@@ -280,7 +282,7 @@ function buildRows({
         // the literal edge of the box are always fully suppressed — without
         // this, two adjacent sections' fields can both show glyphs on their
         // shared boundary row, reading as a visible seam between them.
-        const dx = (u - 0.5) / 0.5;
+        const dx = (u - centerU) / 0.5;
         const dy = (v - 0.5) / 0.5;
         const rDist = Math.sqrt(dx * dx + dy * dy);
         const bound = 1 - smoothstep(boundInner, boundOuter, rDist);
@@ -395,6 +397,7 @@ export function TechGrid({
   boundInner,
   boundOuter,
   shapeThreshold,
+  centerU = 0.5,
   swapIntervalMs = SWAP_INTERVAL_MS,
   spinDurationMs = SPIN_DURATION_MS,
   swapFraction = SWAP_FRACTION,
@@ -447,6 +450,12 @@ export function TechGrid({
    * glyphs with more open space between them; lower means one denser,
    * more contiguous mass. Defaults to the component's standard threshold. */
   shapeThreshold?: number;
+  /** Horizontal center (0..1) of the halo's radial vignette — shifts the
+   * visible cluster toward one side of the grid (e.g. matching where a
+   * section's text sits) while it still fades out naturally in every
+   * direction, instead of relying on a narrower container to hard-crop it.
+   * Defaults to 0.5 (true center). */
+  centerU?: number;
   /** Override the default scramble pace — lower is faster/more frantic.
    * Binary sections use this to read as a clearly "live" flicker instead of
    * a barely-perceptible change (a 0/1 swap has only two possible values). */
@@ -504,6 +513,7 @@ export function TechGrid({
         boundInner,
         boundOuter,
         shapeThreshold,
+        centerU,
       }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [
@@ -520,6 +530,7 @@ export function TechGrid({
       boundInner,
       boundOuter,
       shapeThreshold,
+      centerU,
       spots,
       glyphs,
     ],

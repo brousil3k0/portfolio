@@ -11,25 +11,25 @@ export function SoftwareSection({ lang }: { lang: Lang }) {
   return (
     <section className="relative overflow-hidden bg-void">
       <div className={ABS_CONTAINER}>
-        <div className="absolute inset-y-0 right-0 w-full max-w-2xl">
-          <TechGrid
-            mode="binary"
-            glyphs={BINARY_GLYPHS}
-            seed="software"
-            rows={32}
-            cols={60}
-            align="center"
-            shadeSpread={2}
-            shadeBands={5}
-            shapeScale={0.55}
-            warpAmount={0.32}
-            boundInner={0.5}
-            accentColor="#00cc00"
-            swapIntervalMs={70}
-            swapFraction={0.6}
-            className="inset-0"
-          />
-        </div>
+        <TechGrid
+          mode="binary"
+          glyphs={BINARY_GLYPHS}
+          seed="software"
+          rows={32}
+          cols={60}
+          align="center"
+          shadeSpread={2}
+          shadeBands={5}
+          shapeScale={0.5}
+          warpAmount={0.4}
+          boundInner={0.3}
+          boundOuter={0.8}
+          centerU={0.68}
+          accentColor="#00cc00"
+          swapIntervalMs={70}
+          swapFraction={0.6}
+          className="inset-0"
+        />
       </div>
 
       <div className={`${CONTAINER} relative z-10 flex flex-col items-end pt-[11rem] pb-[9rem] md:pt-[14rem] md:pb-[12rem]`}>
