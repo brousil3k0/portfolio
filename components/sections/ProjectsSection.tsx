@@ -2,25 +2,13 @@
 
 import Link from "next/link";
 import { useMemo, useState } from "react";
-import type { GlyphSpot } from "@/components/grid/TechGrid";
 import { TechGrid } from "@/components/grid/TechGrid";
-import { BINARY_GLYPHS, ELECTRICAL_VOCAB, MECHANICAL_VOCAB } from "@/components/grid/vocab";
+import { PROJECTS_BINARY } from "@/components/grid/vocab";
 import { SkillTag } from "@/components/ui/SkillTag";
 import type { Lang } from "@/content/i18n";
 import { getDictionary } from "@/content/i18n";
 import { cn } from "@/lib/cn";
 import { ABS_CONTAINER, CONTAINER } from "@/lib/layout";
-
-// Projects spans all three disciplines, so its halo blends all three
-// vocabularies (like Hero) rather than favoring one section's accent.
-// The heading/filters sit top-left and the cards run along the bottom, so
-// every spot is pushed toward the right edge and corners — away from the
-// readable content — and kept sparse, since this section is already busy.
-const PROJECTS_SPOTS: GlyphSpot[] = [
-  { glyphs: BINARY_GLYPHS, center: [0.95, 0.1], sigma: 0.22 },
-  { glyphs: MECHANICAL_VOCAB, center: [0.95, 0.55], sigma: 0.22 },
-  { glyphs: ELECTRICAL_VOCAB, center: [0.85, 0.95], sigma: 0.22 },
-];
 
 function filterButtonClass(active: boolean) {
   return cn(
@@ -47,14 +35,22 @@ export function ProjectsSection({ lang }: { lang: Lang }) {
     <section id="projects" className="relative scroll-mt-16 overflow-hidden bg-void">
       <div className={ABS_CONTAINER}>
         <TechGrid
-          mode="words"
-          spots={PROJECTS_SPOTS}
+          mode="binary"
+          glyphs={PROJECTS_BINARY}
           seed="projects"
-          rows={22}
-          cols={34}
-          shadeSpread={1}
-          boundInner={0.5}
-          boundOuter={0.9}
+          rows={32}
+          cols={60}
+          align="center"
+          shadeSpread={2}
+          shadeBands={5}
+          shapeScale={1.15}
+          shapeThreshold={0.52}
+          warpAmount={0.5}
+          boundInner={0.3}
+          boundOuter={0.8}
+          centerU={0.72}
+          swapIntervalMs={70}
+          swapFraction={0.6}
           className="inset-0"
         />
       </div>
