@@ -4,6 +4,7 @@ export const ELECTRICAL_VOCAB = ["PWM", "ADC", "GND", "5V", "IO4", "PWR", "I2C",
 
 // Two-glyph pools for the binary-style grids (mode="binary", matching
 // SoftwareSection's 0/1 treatment) — diameter/perpendicularity for
-// mechanical, plus/minus for electrical.
+// mechanical, plus/minus for electrical, X/Y for hero.
 export const MECHANICAL_BINARY = ["Ø", "⟂"];
 export const ELECTRICAL_BINARY = ["+", "-"];
+export const HERO_BINARY = ["X", "Y"];
