@@ -30,7 +30,19 @@ export function Hero({ lang }: { lang: Lang }) {
           box that clips it, so a dense cluster near an edge got hard-cut.
           50 cols keeps the same per-glyph size/spacing (so it still reads
           just as packed) but renders ~1070px wide, comfortably inside the
-          container with no clipping needed. */}
+          container with no clipping needed.
+          boundOuter is smaller here (0.48, not 0.62) specifically so each
+          cluster's own falloff finishes before reaching u=0/u=1 — at 0.62
+          a cluster centered near an edge (0.14/0.82, tried first) still had
+          most of its full-density core sitting AT that edge, so it didn't
+          fade at all before hitting the row's own boundary, reading as a
+          hard straight-line "wall" instead of an organic taper. Pulling
+          centerU inward instead (tried next, ~0.34-0.66) fixed the wall but
+          collapsed all four clusters into one dense mass in the middle,
+          right behind the text — the same symmetric-mask problem from
+          earlier in this session. Shrinking boundOuter keeps centerU close
+          to the corners (0.26/0.74) for real left/right spread while still
+          guaranteeing the vignette reaches zero before the edge. */}
       <div className={ABS_CONTAINER}>
         <TechGrid
           mode="binary"
@@ -43,9 +55,9 @@ export function Hero({ lang }: { lang: Lang }) {
           shapeScale={1.15}
           shapeThreshold={0.52}
           warpAmount={0.5}
-          boundInner={0.26}
-          boundOuter={0.62}
-          centerU={0.66}
+          boundInner={0.24}
+          boundOuter={0.48}
+          centerU={0.74}
           centerV={0.22}
           accentColor={SLOGAN_ACCENT}
           swapIntervalMs={70}
@@ -63,9 +75,9 @@ export function Hero({ lang }: { lang: Lang }) {
           shapeScale={1.15}
           shapeThreshold={0.52}
           warpAmount={0.5}
-          boundInner={0.26}
-          boundOuter={0.62}
-          centerU={0.14}
+          boundInner={0.24}
+          boundOuter={0.48}
+          centerU={0.26}
           centerV={0.3}
           accentColor={SLOGAN_ACCENT}
           swapIntervalMs={70}
@@ -83,9 +95,9 @@ export function Hero({ lang }: { lang: Lang }) {
           shapeScale={1.15}
           shapeThreshold={0.52}
           warpAmount={0.5}
-          boundInner={0.26}
-          boundOuter={0.62}
-          centerU={0.82}
+          boundInner={0.24}
+          boundOuter={0.48}
+          centerU={0.74}
           centerV={0.7}
           accentColor={SLOGAN_ACCENT}
           swapIntervalMs={70}
@@ -103,10 +115,10 @@ export function Hero({ lang }: { lang: Lang }) {
           shapeScale={1.15}
           shapeThreshold={0.52}
           warpAmount={0.5}
-          boundInner={0.26}
-          boundOuter={0.62}
+          boundInner={0.24}
+          boundOuter={0.48}
           centerU={0.26}
-          centerV={0.82}
+          centerV={0.78}
           accentColor={SLOGAN_ACCENT}
           swapIntervalMs={70}
           swapFraction={0.6}
@@ -117,33 +129,46 @@ export function Hero({ lang }: { lang: Lang }) {
       <div className={`${CONTAINER} relative z-10 flex flex-1 flex-col pt-28 pb-8`}>
         <div className="flex flex-1 flex-col">
           <div className="relative mx-auto w-fit max-w-4xl pt-24 text-center sm:pt-32 md:pt-40">
-            <div aria-hidden="true" className="absolute -inset-10 rounded-[2rem] bg-void/95 blur-xl" />
             <h1 className="relative font-display text-base font-medium leading-[1.25] tracking-tight text-bone sm:text-[32px] md:text-[38px] lg:text-[52px] xl:text-[58px]">
               {/* A slight, deliberate left/right offset on each line —
                   enough to read as an intentional off-center composition,
                   not a layout bug. Pure transform (no margin) so it doesn't
-                  disturb the block's own centered width. */}
-              <span className="block -translate-x-14 whitespace-nowrap sm:-translate-x-20 md:-translate-x-28 lg:-translate-x-36">
-                {t.hero.sloganLine1.map((seg, i) => (
-                  <span
-                    key={i}
-                    className={cn("bold" in seg && seg.bold && "font-extrabold")}
-                    style={"accent" in seg && seg.accent ? { color: SLOGAN_ACCENT } : undefined}
-                  >
-                    {seg.text}
-                  </span>
-                ))}
+                  disturb the block's own centered width.
+                  Each line gets its own shadow, sized (inline-block, not
+                  full-width block) and moved (the translate lives on this
+                  same inline-block, not a separate wrapper) to match that
+                  line's own actual rendered text exactly — a single shared
+                  backdrop sized to the wider line left dead shaded space
+                  next to the shorter one while glyphs bled in on its other
+                  side, since it couldn't track each line's own width/offset
+                  independently. */}
+              <span className="block">
+                <span className="relative inline-block -translate-x-14 whitespace-nowrap sm:-translate-x-20 md:-translate-x-28 lg:-translate-x-36">
+                  <span aria-hidden="true" className="absolute -inset-x-3 -inset-y-1.5 -z-10 rounded-lg bg-void/95 blur-md" />
+                  {t.hero.sloganLine1.map((seg, i) => (
+                    <span
+                      key={i}
+                      className={cn("bold" in seg && seg.bold && "font-extrabold")}
+                      style={"accent" in seg && seg.accent ? { color: SLOGAN_ACCENT } : undefined}
+                    >
+                      {seg.text}
+                    </span>
+                  ))}
+                </span>
               </span>
-              <span className="block translate-x-6 whitespace-nowrap sm:translate-x-8 md:translate-x-12 lg:translate-x-16">
-                {t.hero.sloganLine2.map((seg, i) => (
-                  <span
-                    key={i}
-                    className={cn("bold" in seg && seg.bold && "font-extrabold")}
-                    style={"accent" in seg && seg.accent ? { color: SLOGAN_ACCENT } : undefined}
-                  >
-                    {seg.text}
-                  </span>
-                ))}
+              <span className="block">
+                <span className="relative inline-block translate-x-6 whitespace-nowrap sm:translate-x-8 md:translate-x-12 lg:translate-x-16">
+                  <span aria-hidden="true" className="absolute -inset-x-3 -inset-y-1.5 -z-10 rounded-lg bg-void/95 blur-md" />
+                  {t.hero.sloganLine2.map((seg, i) => (
+                    <span
+                      key={i}
+                      className={cn("bold" in seg && seg.bold && "font-extrabold")}
+                      style={"accent" in seg && seg.accent ? { color: SLOGAN_ACCENT } : undefined}
+                    >
+                      {seg.text}
+                    </span>
+                  ))}
+                </span>
               </span>
             </h1>
           </div>
