@@ -18,15 +18,13 @@ export function Hero({ lang }: { lang: Lang }) {
 
   return (
     <section className="relative flex min-h-[100svh] flex-col overflow-hidden bg-void">
-      {/* Two instances, both using the same boundInner/boundOuter recipe as
-          every other section's TechGrid — a tighter radius (tried earlier
-          for a two-cluster layout) is smaller than a single shape-noise
-          cell, so the core renders as one solid block instead of
-          fragmenting into islands. boundOuter pulled in slightly from 0.85
-          to trim overall coverage. One cluster upper-right, one upper-left,
-          echoing the offset slogan lines below rather than a single
-          horizontal push (tried earlier, read as lopsided against the
-          vertically-centered text). */}
+      {/* Four smaller instances instead of two bigger ones — two clusters
+          both sat in the upper half, reading as "one pack" up top with the
+          lower half empty. Spreading one into each quadrant (with a smaller
+          boundOuter per instance so four of them don't merge back into one
+          big mass) covers the section evenly while each still keeps the
+          same boundInner-well-above-one-noise-cell recipe that keeps the
+          silhouette fragmented into islands rather than a solid block. */}
       <div className={ABS_CONTAINER}>
         <TechGrid
           mode="binary"
@@ -39,10 +37,10 @@ export function Hero({ lang }: { lang: Lang }) {
           shapeScale={1.15}
           shapeThreshold={0.52}
           warpAmount={0.5}
-          boundInner={0.3}
-          boundOuter={0.75}
-          centerU={0.6}
-          centerV={0.4}
+          boundInner={0.26}
+          boundOuter={0.62}
+          centerU={0.66}
+          centerV={0.22}
           accentColor={SLOGAN_ACCENT}
           swapIntervalMs={70}
           swapFraction={0.6}
@@ -59,10 +57,50 @@ export function Hero({ lang }: { lang: Lang }) {
           shapeScale={1.15}
           shapeThreshold={0.52}
           warpAmount={0.5}
-          boundInner={0.3}
-          boundOuter={0.75}
-          centerU={0.2}
-          centerV={0.22}
+          boundInner={0.26}
+          boundOuter={0.62}
+          centerU={0.14}
+          centerV={0.3}
+          accentColor={SLOGAN_ACCENT}
+          swapIntervalMs={70}
+          swapFraction={0.6}
+          className="inset-0"
+        />
+        <TechGrid
+          mode="binary"
+          glyphs={HERO_BINARY}
+          seed="hero-c"
+          rows={32}
+          cols={60}
+          shadeSpread={2}
+          shadeBands={5}
+          shapeScale={1.15}
+          shapeThreshold={0.52}
+          warpAmount={0.5}
+          boundInner={0.26}
+          boundOuter={0.62}
+          centerU={0.82}
+          centerV={0.7}
+          accentColor={SLOGAN_ACCENT}
+          swapIntervalMs={70}
+          swapFraction={0.6}
+          className="inset-0"
+        />
+        <TechGrid
+          mode="binary"
+          glyphs={HERO_BINARY}
+          seed="hero-d"
+          rows={32}
+          cols={60}
+          shadeSpread={2}
+          shadeBands={5}
+          shapeScale={1.15}
+          shapeThreshold={0.52}
+          warpAmount={0.5}
+          boundInner={0.26}
+          boundOuter={0.62}
+          centerU={0.26}
+          centerV={0.82}
           accentColor={SLOGAN_ACCENT}
           swapIntervalMs={70}
           swapFraction={0.6}
