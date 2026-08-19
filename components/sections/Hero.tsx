@@ -24,14 +24,20 @@ export function Hero({ lang }: { lang: Lang }) {
           boundOuter per instance so four of them don't merge back into one
           big mass) covers the section evenly while each still keeps the
           same boundInner-well-above-one-noise-cell recipe that keeps the
-          silhouette fragmented into islands rather than a solid block. */}
+          silhouette fragmented into islands rather than a solid block.
+          cols=50 (not the usual 60) — at 60 cols/fontSize=20 each row
+          renders ~1286px wide, ~134px wider than the max-w-6xl container
+          box that clips it, so a dense cluster near an edge got hard-cut.
+          50 cols keeps the same per-glyph size/spacing (so it still reads
+          just as packed) but renders ~1070px wide, comfortably inside the
+          container with no clipping needed. */}
       <div className={ABS_CONTAINER}>
         <TechGrid
           mode="binary"
           glyphs={HERO_BINARY}
           seed="hero-a"
           rows={32}
-          cols={60}
+          cols={50}
           shadeSpread={2}
           shadeBands={5}
           shapeScale={1.15}
@@ -51,7 +57,7 @@ export function Hero({ lang }: { lang: Lang }) {
           glyphs={HERO_BINARY}
           seed="hero-b"
           rows={32}
-          cols={60}
+          cols={50}
           shadeSpread={2}
           shadeBands={5}
           shapeScale={1.15}
@@ -71,7 +77,7 @@ export function Hero({ lang }: { lang: Lang }) {
           glyphs={HERO_BINARY}
           seed="hero-c"
           rows={32}
-          cols={60}
+          cols={50}
           shadeSpread={2}
           shadeBands={5}
           shapeScale={1.15}
@@ -91,7 +97,7 @@ export function Hero({ lang }: { lang: Lang }) {
           glyphs={HERO_BINARY}
           seed="hero-d"
           rows={32}
-          cols={60}
+          cols={50}
           shadeSpread={2}
           shadeBands={5}
           shapeScale={1.15}
@@ -111,7 +117,7 @@ export function Hero({ lang }: { lang: Lang }) {
       <div className={`${CONTAINER} relative z-10 flex flex-1 flex-col pt-28 pb-8`}>
         <div className="flex flex-1 flex-col">
           <div className="relative mx-auto w-fit max-w-4xl pt-24 text-center sm:pt-32 md:pt-40">
-            <div aria-hidden="true" className="absolute -inset-8 rounded-[2rem] bg-void/85 blur-xl" />
+            <div aria-hidden="true" className="absolute -inset-10 rounded-[2rem] bg-void/95 blur-xl" />
             <h1 className="relative font-display text-base font-medium leading-[1.25] tracking-tight text-bone sm:text-[32px] md:text-[38px] lg:text-[52px] xl:text-[58px]">
               {/* A slight, deliberate left/right offset on each line —
                   enough to read as an intentional off-center composition,
@@ -150,7 +156,7 @@ export function Hero({ lang }: { lang: Lang }) {
               page. */}
           <div className="relative mt-auto w-full max-w-6xl pb-28 sm:pb-32 md:pb-36">
             <div className="relative mx-auto w-fit">
-              <div aria-hidden="true" className="absolute -inset-4 rounded-full bg-void/85 blur-xl" />
+              <div aria-hidden="true" className="absolute -inset-6 rounded-full bg-void/95 blur-xl" />
               <p className="relative text-center font-mono text-base uppercase tracking-[0.2em] text-bone-dim sm:text-lg md:text-xl">
                 {siteConfig.name}
               </p>
