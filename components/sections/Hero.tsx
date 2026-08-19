@@ -18,14 +18,14 @@ export function Hero({ lang }: { lang: Lang }) {
 
   return (
     <section className="relative flex min-h-[100svh] flex-col overflow-hidden bg-void">
-      {/* Two instances for more overall coverage, both using the same
-          boundInner/boundOuter recipe as every other section's TechGrid
-          (0.3/0.8-ish) — a tighter radius (tried earlier for a two-cluster
-          layout) is smaller than a single shape-noise cell, so the core
-          renders as one solid block instead of fragmenting into islands.
-          Each is biased diagonally in BOTH axes, on opposite sides, echoing
-          the offset slogan lines below, rather than a single horizontal
-          push (tried earlier, read as lopsided against the
+      {/* Two instances, both using the same boundInner/boundOuter recipe as
+          every other section's TechGrid — a tighter radius (tried earlier
+          for a two-cluster layout) is smaller than a single shape-noise
+          cell, so the core renders as one solid block instead of
+          fragmenting into islands. boundOuter pulled in slightly from 0.85
+          to trim overall coverage. One cluster upper-right, one upper-left,
+          echoing the offset slogan lines below rather than a single
+          horizontal push (tried earlier, read as lopsided against the
           vertically-centered text). */}
       <div className={ABS_CONTAINER}>
         <TechGrid
@@ -40,7 +40,7 @@ export function Hero({ lang }: { lang: Lang }) {
           shapeThreshold={0.52}
           warpAmount={0.5}
           boundInner={0.3}
-          boundOuter={0.85}
+          boundOuter={0.75}
           centerU={0.6}
           centerV={0.4}
           accentColor={SLOGAN_ACCENT}
@@ -60,9 +60,9 @@ export function Hero({ lang }: { lang: Lang }) {
           shapeThreshold={0.52}
           warpAmount={0.5}
           boundInner={0.3}
-          boundOuter={0.85}
-          centerU={0.22}
-          centerV={0.72}
+          boundOuter={0.75}
+          centerU={0.2}
+          centerV={0.22}
           accentColor={SLOGAN_ACCENT}
           swapIntervalMs={70}
           swapFraction={0.6}
