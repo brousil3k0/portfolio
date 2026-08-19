@@ -49,11 +49,11 @@ export function SoftwareSection({ lang }: { lang: Lang }) {
               ))}
             </ul>
 
-            <p className="mt-8 max-w-xl text-lg leading-relaxed text-bone-dim">
+            <p className="mt-8 ml-auto max-w-xl text-lg leading-relaxed text-bone-dim">
               {t.software.body}
             </p>
 
-            <ul className="mt-6 max-w-xl list-none space-y-2 text-lg leading-relaxed text-bone-dim">
+            <ul className="mt-6 ml-auto max-w-xl list-none space-y-2 text-lg leading-relaxed text-bone-dim">
               {t.software.bullets.map((bullet) => (
                 <li key={bullet} className="flex justify-end gap-2">
                   <span>{bullet}</span>
