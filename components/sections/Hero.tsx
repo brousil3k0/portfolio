@@ -18,18 +18,18 @@ export function Hero({ lang }: { lang: Lang }) {
 
   return (
     <section className="relative flex min-h-[100svh] flex-col overflow-hidden bg-void">
-      {/* Two independent, differently-seeded clusters placed on the same
-          upper-left/lower-right diagonal as the offset slogan lines below,
-          instead of one halo centered (or simply dragged to one side)
-          behind the centered text — a single center reads as a symmetric
-          mask, and a single off-center blob just reads as lopsided. Two
-          separate random shapes read as genuinely scattered while still
-          echoing the page's own asymmetric composition. */}
+      {/* Same boundInner/boundOuter recipe as every other section's TechGrid
+          (0.3/0.8) — a tighter radius (tried earlier) is smaller than a
+          single shape-noise cell, so the core renders as one solid block
+          instead of fragmenting into islands. Biased diagonally in BOTH
+          axes, echoing the offset slogan lines below, rather than a single
+          horizontal push (tried earlier, read as lopsided against the
+          vertically-centered text). */}
       <div className={ABS_CONTAINER}>
         <TechGrid
           mode="binary"
           glyphs={HERO_BINARY}
-          seed="hero-a"
+          seed="hero"
           rows={32}
           cols={60}
           shadeSpread={2}
@@ -37,30 +37,10 @@ export function Hero({ lang }: { lang: Lang }) {
           shapeScale={1.15}
           shapeThreshold={0.52}
           warpAmount={0.5}
-          boundInner={0.18}
-          boundOuter={0.5}
-          centerU={0.26}
-          centerV={0.3}
-          accentColor={SLOGAN_ACCENT}
-          swapIntervalMs={70}
-          swapFraction={0.6}
-          className="inset-0"
-        />
-        <TechGrid
-          mode="binary"
-          glyphs={HERO_BINARY}
-          seed="hero-b"
-          rows={32}
-          cols={60}
-          shadeSpread={2}
-          shadeBands={5}
-          shapeScale={1.15}
-          shapeThreshold={0.52}
-          warpAmount={0.5}
-          boundInner={0.18}
-          boundOuter={0.5}
-          centerU={0.76}
-          centerV={0.72}
+          boundInner={0.3}
+          boundOuter={0.85}
+          centerU={0.6}
+          centerV={0.4}
           accentColor={SLOGAN_ACCENT}
           swapIntervalMs={70}
           swapFraction={0.6}
