@@ -9,9 +9,16 @@ import { ABS_CONTAINER, CONTAINER } from "@/lib/layout";
 
 /** Accent color for highlighted slogan words — deliberately outside the
  * bone/void palette so "idea" and "product" read as the two poles of the
- * slogan's arc, not just emphasized text. Also drives the hero's own
- * TechGrid accent, tying the background texture to the same color. */
+ * slogan's arc, not just emphasized text. */
 const SLOGAN_ACCENT = "#40e0d0";
+
+/** Hero TechGrid accent — a deep purple, plus a few shades of it (lighter
+ * tints and a darker tone) spread one per instance so the four corner
+ * clusters aren't all one identical flat color. */
+const GRID_ACCENT_BASE = "#4b006e";
+const GRID_ACCENT_LIGHT_1 = "#784092";
+const GRID_ACCENT_LIGHT_2 = "#9c73af";
+const GRID_ACCENT_DARK = "#35004d";
 
 export function Hero({ lang }: { lang: Lang }) {
   const t = getDictionary(lang);
@@ -59,7 +66,7 @@ export function Hero({ lang }: { lang: Lang }) {
           boundOuter={0.48}
           centerU={0.74}
           centerV={0.22}
-          accentColor={SLOGAN_ACCENT}
+          accentColor={GRID_ACCENT_LIGHT_1}
           swapIntervalMs={70}
           swapFraction={0.6}
           className="inset-0"
@@ -79,7 +86,7 @@ export function Hero({ lang }: { lang: Lang }) {
           boundOuter={0.48}
           centerU={0.26}
           centerV={0.3}
-          accentColor={SLOGAN_ACCENT}
+          accentColor={GRID_ACCENT_BASE}
           swapIntervalMs={70}
           swapFraction={0.6}
           className="inset-0"
@@ -99,7 +106,7 @@ export function Hero({ lang }: { lang: Lang }) {
           boundOuter={0.48}
           centerU={0.74}
           centerV={0.7}
-          accentColor={SLOGAN_ACCENT}
+          accentColor={GRID_ACCENT_DARK}
           swapIntervalMs={70}
           swapFraction={0.6}
           className="inset-0"
@@ -119,7 +126,7 @@ export function Hero({ lang }: { lang: Lang }) {
           boundOuter={0.48}
           centerU={0.26}
           centerV={0.78}
-          accentColor={SLOGAN_ACCENT}
+          accentColor={GRID_ACCENT_LIGHT_2}
           swapIntervalMs={70}
           swapFraction={0.6}
           className="inset-0"
