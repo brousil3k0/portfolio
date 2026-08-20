@@ -12,13 +12,10 @@ import { ABS_CONTAINER, CONTAINER } from "@/lib/layout";
  * slogan's arc, not just emphasized text. */
 const SLOGAN_ACCENT = "#40e0d0";
 
-/** Hero TechGrid accent — a red, plus a few shades of it (lighter tints and
- * a darker tone) spread one per instance so the four corner clusters aren't
- * all one identical flat color. */
-const GRID_ACCENT_BASE = "#e63946";
-const GRID_ACCENT_LIGHT_1 = "#ec6b74";
-const GRID_ACCENT_LIGHT_2 = "#f39ca3";
-const GRID_ACCENT_DARK = "#a12831";
+/** Hero TechGrid accent — a single bright, saturated red for every instance
+ * (no muted/dark or washed-out tints); the grid's own gray/bone cells
+ * already provide the white/gray contrast alongside it. */
+const GRID_ACCENT = "#ff2b2b";
 
 export function Hero({ lang }: { lang: Lang }) {
   const t = getDictionary(lang);
@@ -66,7 +63,7 @@ export function Hero({ lang }: { lang: Lang }) {
           boundOuter={0.48}
           centerU={0.74}
           centerV={0.22}
-          accentColor={GRID_ACCENT_LIGHT_1}
+          accentColor={GRID_ACCENT}
           swapIntervalMs={70}
           swapFraction={0.6}
           className="inset-0"
@@ -86,7 +83,7 @@ export function Hero({ lang }: { lang: Lang }) {
           boundOuter={0.48}
           centerU={0.26}
           centerV={0.3}
-          accentColor={GRID_ACCENT_BASE}
+          accentColor={GRID_ACCENT}
           swapIntervalMs={70}
           swapFraction={0.6}
           className="inset-0"
@@ -106,7 +103,7 @@ export function Hero({ lang }: { lang: Lang }) {
           boundOuter={0.48}
           centerU={0.74}
           centerV={0.7}
-          accentColor={GRID_ACCENT_DARK}
+          accentColor={GRID_ACCENT}
           swapIntervalMs={70}
           swapFraction={0.6}
           className="inset-0"
@@ -126,7 +123,7 @@ export function Hero({ lang }: { lang: Lang }) {
           boundOuter={0.48}
           centerU={0.26}
           centerV={0.78}
-          accentColor={GRID_ACCENT_LIGHT_2}
+          accentColor={GRID_ACCENT}
           swapIntervalMs={70}
           swapFraction={0.6}
           className="inset-0"
