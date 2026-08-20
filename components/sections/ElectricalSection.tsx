@@ -26,7 +26,7 @@ export function ElectricalSection({ lang }: { lang: Lang }) {
           boundInner={0.3}
           boundOuter={0.8}
           centerU={0.32}
-          accentColor="#f2994a"
+          accentColor="#e63946"
           swapIntervalMs={70}
           swapFraction={0.6}
           className="inset-0"
