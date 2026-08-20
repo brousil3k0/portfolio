@@ -12,13 +12,13 @@ import { ABS_CONTAINER, CONTAINER } from "@/lib/layout";
  * slogan's arc, not just emphasized text. */
 const SLOGAN_ACCENT = "#40e0d0";
 
-/** Hero TechGrid accent — a deep purple, plus a few shades of it (lighter
- * tints and a darker tone) spread one per instance so the four corner
- * clusters aren't all one identical flat color. */
-const GRID_ACCENT_BASE = "#4b006e";
-const GRID_ACCENT_LIGHT_1 = "#784092";
-const GRID_ACCENT_LIGHT_2 = "#9c73af";
-const GRID_ACCENT_DARK = "#35004d";
+/** Hero TechGrid accent — a red, plus a few shades of it (lighter tints and
+ * a darker tone) spread one per instance so the four corner clusters aren't
+ * all one identical flat color. */
+const GRID_ACCENT_BASE = "#e63946";
+const GRID_ACCENT_LIGHT_1 = "#ec6b74";
+const GRID_ACCENT_LIGHT_2 = "#f39ca3";
+const GRID_ACCENT_DARK = "#a12831";
 
 export function Hero({ lang }: { lang: Lang }) {
   const t = getDictionary(lang);

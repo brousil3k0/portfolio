@@ -26,7 +26,7 @@ export function MechanicalSection({ lang }: { lang: Lang }) {
           boundInner={0.3}
           boundOuter={0.8}
           centerU={0.68}
-          accentColor="#6575d5"
+          accentColor="#e63946"
           swapIntervalMs={70}
           swapFraction={0.6}
           className="inset-0"
