@@ -150,7 +150,7 @@ export function Hero({ lang }: { lang: Lang }) {
                       className={cn("bold" in seg && seg.bold && "font-extrabold")}
                       style={
                         "accent" in seg && seg.accent
-                          ? { color: ACCENT, textShadow: "0 0 12px currentColor, 0 0 24px currentColor" }
+                          ? { color: ACCENT, textShadow: "0 0 6px currentColor" }
                           : undefined
                       }
                     >
@@ -168,7 +168,7 @@ export function Hero({ lang }: { lang: Lang }) {
                       className={cn("bold" in seg && seg.bold && "font-extrabold")}
                       style={
                         "accent" in seg && seg.accent
-                          ? { color: ACCENT, textShadow: "0 0 12px currentColor, 0 0 24px currentColor" }
+                          ? { color: ACCENT, textShadow: "0 0 6px currentColor" }
                           : undefined
                       }
                     >
