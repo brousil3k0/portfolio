@@ -10,11 +10,10 @@ import { ABS_CONTAINER, CONTAINER } from "@/lib/layout";
 /** Red accent for every Hero TechGrid instance. */
 const ACCENT = "#ff0000";
 
-/** Muted, low-intensity orange for the highlighted slogan words ("idea" and
- * "product") — deliberately its own (softer, desaturated) color and weight
- * rather than reusing the grid's bright red, so the highlight reads as a
- * quiet accent instead of shouting over the rest of the line. */
-const HIGHLIGHT_ACCENT = "#c98247";
+/** Cyan/teal for the highlighted slogan words ("idea" and "product") — the
+ * site's original highlight color, cool and high-contrast against the red
+ * grid rather than a variant of it. */
+const HIGHLIGHT_ACCENT = "#40e0d0";
 
 export function Hero({ lang }: { lang: Lang }) {
   const t = getDictionary(lang);
