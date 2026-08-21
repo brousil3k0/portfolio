@@ -7,15 +7,10 @@ import { siteConfig } from "@/content/site";
 import { cn } from "@/lib/cn";
 import { ABS_CONTAINER, CONTAINER } from "@/lib/layout";
 
-/** Accent color for highlighted slogan words — deliberately outside the
- * bone/void palette so "idea" and "product" read as the two poles of the
- * slogan's arc, not just emphasized text. */
-const SLOGAN_ACCENT = "#40e0d0";
-
-/** Hero TechGrid accent — a single bright, saturated red for every instance
- * (no muted/dark or washed-out tints); the grid's own gray/bone cells
- * already provide the white/gray contrast alongside it. */
-const GRID_ACCENT = "#ff2b2b";
+/** Shared red accent — used both for the highlighted slogan words ("idea"
+ * and "product") and every Hero TechGrid instance, so the whole section
+ * reads as one consistent red + white/gray palette. */
+const ACCENT = "#ff2b2b";
 
 export function Hero({ lang }: { lang: Lang }) {
   const t = getDictionary(lang);
@@ -63,7 +58,7 @@ export function Hero({ lang }: { lang: Lang }) {
           boundOuter={0.48}
           centerU={0.74}
           centerV={0.22}
-          accentColor={GRID_ACCENT}
+          accentColor={ACCENT}
           swapIntervalMs={70}
           swapFraction={0.6}
           className="inset-0"
@@ -83,7 +78,7 @@ export function Hero({ lang }: { lang: Lang }) {
           boundOuter={0.48}
           centerU={0.26}
           centerV={0.3}
-          accentColor={GRID_ACCENT}
+          accentColor={ACCENT}
           swapIntervalMs={70}
           swapFraction={0.6}
           className="inset-0"
@@ -103,7 +98,7 @@ export function Hero({ lang }: { lang: Lang }) {
           boundOuter={0.48}
           centerU={0.74}
           centerV={0.7}
-          accentColor={GRID_ACCENT}
+          accentColor={ACCENT}
           swapIntervalMs={70}
           swapFraction={0.6}
           className="inset-0"
@@ -123,7 +118,7 @@ export function Hero({ lang }: { lang: Lang }) {
           boundOuter={0.48}
           centerU={0.26}
           centerV={0.78}
-          accentColor={GRID_ACCENT}
+          accentColor={ACCENT}
           swapIntervalMs={70}
           swapFraction={0.6}
           className="inset-0"
@@ -153,7 +148,7 @@ export function Hero({ lang }: { lang: Lang }) {
                     <span
                       key={i}
                       className={cn("bold" in seg && seg.bold && "font-extrabold")}
-                      style={"accent" in seg && seg.accent ? { color: SLOGAN_ACCENT } : undefined}
+                      style={"accent" in seg && seg.accent ? { color: ACCENT } : undefined}
                     >
                       {seg.text}
                     </span>
@@ -167,7 +162,7 @@ export function Hero({ lang }: { lang: Lang }) {
                     <span
                       key={i}
                       className={cn("bold" in seg && seg.bold && "font-extrabold")}
-                      style={"accent" in seg && seg.accent ? { color: SLOGAN_ACCENT } : undefined}
+                      style={"accent" in seg && seg.accent ? { color: ACCENT } : undefined}
                     >
                       {seg.text}
                     </span>
