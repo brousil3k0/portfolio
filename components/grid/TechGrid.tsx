@@ -698,7 +698,7 @@ export function TechGrid({
                     // Accent-tinted cells get a soft glow in their own color —
                     // makes the red read as lit up against the void background
                     // instead of a flat tint. Gray/bone cells stay shadow-free.
-                    textShadow: cellColor ? "0 0 5px currentColor, 0 0 10px currentColor" : undefined,
+                    textShadow: cellColor ? "0 0 2px currentColor" : undefined,
                     width: mode === "binary" ? `${Math.round(fontSize * 0.62)}px` : undefined,
                     textAlign: mode === "binary" ? "center" : undefined,
                     display: "inline-block",
