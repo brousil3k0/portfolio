@@ -10,7 +10,7 @@ import { ABS_CONTAINER, CONTAINER } from "@/lib/layout";
 /** Shared red accent — used both for the highlighted slogan words ("idea"
  * and "product") and every Hero TechGrid instance, so the whole section
  * reads as one consistent red + white/gray palette. */
-const ACCENT = "#ff2b2b";
+const ACCENT = "#ff0000";
 
 export function Hero({ lang }: { lang: Lang }) {
   const t = getDictionary(lang);
@@ -148,7 +148,11 @@ export function Hero({ lang }: { lang: Lang }) {
                     <span
                       key={i}
                       className={cn("bold" in seg && seg.bold && "font-extrabold")}
-                      style={"accent" in seg && seg.accent ? { color: ACCENT } : undefined}
+                      style={
+                        "accent" in seg && seg.accent
+                          ? { color: ACCENT, textShadow: "0 0 12px currentColor, 0 0 24px currentColor" }
+                          : undefined
+                      }
                     >
                       {seg.text}
                     </span>
@@ -162,7 +166,11 @@ export function Hero({ lang }: { lang: Lang }) {
                     <span
                       key={i}
                       className={cn("bold" in seg && seg.bold && "font-extrabold")}
-                      style={"accent" in seg && seg.accent ? { color: ACCENT } : undefined}
+                      style={
+                        "accent" in seg && seg.accent
+                          ? { color: ACCENT, textShadow: "0 0 12px currentColor, 0 0 24px currentColor" }
+                          : undefined
+                      }
                     >
                       {seg.text}
                     </span>

@@ -684,23 +684,30 @@ export function TechGrid({
               justifyContent: fade !== "none" ? "space-between" : "center",
             }}
           >
-            {row.cells.map((cell, ci) => (
-              <span
-                key={cell.key}
-                className="whitespace-nowrap"
-                style={{
-                  fontSize,
-                  fontWeight: cell.weight,
-                  opacity: cell.opacity,
-                  color: display[ri]?.[ci]?.color ?? cell.color,
-                  width: mode === "binary" ? `${Math.round(fontSize * 0.62)}px` : undefined,
-                  textAlign: mode === "binary" ? "center" : undefined,
-                  display: "inline-block",
-                }}
-              >
-                {display[ri]?.[ci]?.glyph ?? cell.final}
-              </span>
-            ))}
+            {row.cells.map((cell, ci) => {
+              const cellColor = display[ri]?.[ci]?.color ?? cell.color;
+              return (
+                <span
+                  key={cell.key}
+                  className="whitespace-nowrap"
+                  style={{
+                    fontSize,
+                    fontWeight: cell.weight,
+                    opacity: cell.opacity,
+                    color: cellColor,
+                    // Accent-tinted cells get a soft glow in their own color —
+                    // makes the red read as lit up against the void background
+                    // instead of a flat tint. Gray/bone cells stay shadow-free.
+                    textShadow: cellColor ? "0 0 5px currentColor, 0 0 10px currentColor" : undefined,
+                    width: mode === "binary" ? `${Math.round(fontSize * 0.62)}px` : undefined,
+                    textAlign: mode === "binary" ? "center" : undefined,
+                    display: "inline-block",
+                  }}
+                >
+                  {display[ri]?.[ci]?.glyph ?? cell.final}
+                </span>
+              );
+            })}
           </div>
         ))}
       </div>
