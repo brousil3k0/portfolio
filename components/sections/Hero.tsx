@@ -7,13 +7,11 @@ import { siteConfig } from "@/content/site";
 import { cn } from "@/lib/cn";
 import { ABS_CONTAINER, CONTAINER } from "@/lib/layout";
 
-/** Red accent for every Hero TechGrid instance. */
-const ACCENT = "#ff0000";
-
-/** Cyan/teal for the highlighted slogan words ("idea" and "product") — the
- * site's original highlight color, cool and high-contrast against the red
- * grid rather than a variant of it. */
-const HIGHLIGHT_ACCENT = "#40e0d0";
+/** Red for the highlighted slogan words ("idea" and "product") — the grid
+ * itself deliberately carries no accentColor (same as the footer's), so it
+ * renders in plain gray/bone/white, leaving red as the section's one color
+ * accent instead of competing with the grid. */
+const HIGHLIGHT_ACCENT = "#ff0000";
 
 export function Hero({ lang }: { lang: Lang }) {
   const t = getDictionary(lang);
@@ -61,7 +59,6 @@ export function Hero({ lang }: { lang: Lang }) {
           boundOuter={0.48}
           centerU={0.74}
           centerV={0.22}
-          accentColor={ACCENT}
           swapIntervalMs={70}
           swapFraction={0.6}
           className="inset-0"
@@ -81,7 +78,6 @@ export function Hero({ lang }: { lang: Lang }) {
           boundOuter={0.48}
           centerU={0.26}
           centerV={0.3}
-          accentColor={ACCENT}
           swapIntervalMs={70}
           swapFraction={0.6}
           className="inset-0"
@@ -101,7 +97,6 @@ export function Hero({ lang }: { lang: Lang }) {
           boundOuter={0.48}
           centerU={0.74}
           centerV={0.7}
-          accentColor={ACCENT}
           swapIntervalMs={70}
           swapFraction={0.6}
           className="inset-0"
@@ -121,7 +116,6 @@ export function Hero({ lang }: { lang: Lang }) {
           boundOuter={0.48}
           centerU={0.26}
           centerV={0.78}
-          accentColor={ACCENT}
           swapIntervalMs={70}
           swapFraction={0.6}
           className="inset-0"
