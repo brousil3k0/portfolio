@@ -7,10 +7,14 @@ import { siteConfig } from "@/content/site";
 import { cn } from "@/lib/cn";
 import { ABS_CONTAINER, CONTAINER } from "@/lib/layout";
 
-/** Shared red accent — used both for the highlighted slogan words ("idea"
- * and "product") and every Hero TechGrid instance, so the whole section
- * reads as one consistent red + white/gray palette. */
+/** Red accent for every Hero TechGrid instance. */
 const ACCENT = "#ff0000";
+
+/** Muted, low-intensity orange for the highlighted slogan words ("idea" and
+ * "product") — deliberately its own (softer, desaturated) color and weight
+ * rather than reusing the grid's bright red, so the highlight reads as a
+ * quiet accent instead of shouting over the rest of the line. */
+const HIGHLIGHT_ACCENT = "#c98247";
 
 export function Hero({ lang }: { lang: Lang }) {
   const t = getDictionary(lang);
@@ -150,7 +154,7 @@ export function Hero({ lang }: { lang: Lang }) {
                       className={cn("bold" in seg && seg.bold && "font-extrabold")}
                       style={
                         "accent" in seg && seg.accent
-                          ? { color: ACCENT, textShadow: "0 0 6px currentColor" }
+                          ? { color: HIGHLIGHT_ACCENT }
                           : undefined
                       }
                     >
@@ -168,7 +172,7 @@ export function Hero({ lang }: { lang: Lang }) {
                       className={cn("bold" in seg && seg.bold && "font-extrabold")}
                       style={
                         "accent" in seg && seg.accent
-                          ? { color: ACCENT, textShadow: "0 0 6px currentColor" }
+                          ? { color: HIGHLIGHT_ACCENT }
                           : undefined
                       }
                     >
